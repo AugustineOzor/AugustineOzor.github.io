@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
   schedule:
-    - cron: "0 3 * * *"   # daily rebuild so new repos appear automatically
+    - cron: "0 3 * * *"
   workflow_dispatch:
 
 permissions:
@@ -24,13 +24,19 @@ jobs:
         working-directory: AugustineOzor.github.io
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+
       - name: Build site from GitHub repos
         run: npm run build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - uses: actions/upload-pages-artifact@v3
         with:
           path: AugustineOzor.github.io/dist
