@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
   schedule:
-    - cron: "0 3 * * *"
+    - cron: "0 3 * * *"   # daily rebuild so new repos appear automatically
   workflow_dispatch:
 
 permissions:
@@ -19,27 +19,28 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: AugustineOzor.github.io
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+      - name: Locate site folder
+        id: site
+        run: |
+          f=$(find . -path ./node_modules -prune -o -path '*/scripts/build.mjs' -print | head -n 1)
+          if [ -z "$f" ]; then echo "scripts/build.mjs not found in repo"; exit 1; fi
+          dir=$(dirname "$(dirname "$f")")
 
-      - name: Install dependencies
-        run: npm install
-
+          echo "Site folder: $dir"
+          echo "dir=$dir" >> "$GITHUB_OUTPUT"
       - name: Build site from GitHub repos
-        run: npm run build
+        run: node scripts/build.mjs
+        working-directory: ${{ steps.site.outputs.dir }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: AugustineOzor.github.io/dist
+          path: ${{ steps.site.outputs.dir }}/dist
 
   deploy:
     needs: build
