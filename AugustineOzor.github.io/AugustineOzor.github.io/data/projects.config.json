@@ -1,0 +1,295 @@
+{
+  "exclude": [
+    "AugustineOzor",
+    "AugustineOzor.github.io",
+    "microsoft365-copilot-public-ai-risk-asessment",
+    "AI-Governance-Maturity-Assessment-Toolkit"
+  ],
+  "themes": [
+    {
+      "id": "eu-ai-act",
+      "name": "EU AI Act compliance",
+      "blurb": "Classification, provider and deployer obligations, quality management and human oversight under the EU AI Act."
+    },
+    {
+      "id": "ai-risk",
+      "name": "AI risk assessment",
+      "blurb": "Pre-deployment reviews, risk registers, GenAI and LLM security, and AI vendor due diligence."
+    },
+    {
+      "id": "ai-governance",
+      "name": "AI governance programmes",
+      "blurb": "AI inventories, programme charters, gap assessments and responsible-use policy."
+    },
+    {
+      "id": "assurance",
+      "name": "Security and compliance assurance",
+      "blurb": "SOC 2 readiness, ISO/IEC 27001 risk work, cloud hardening, third-party risk and incident response."
+    },
+    {
+      "id": "privacy",
+      "name": "Data protection and privacy",
+      "blurb": "GDPR programmes, DPIAs, DSAR procedures and records of processing."
+    }
+  ],
+  "repos": {
+    "Responsible-AI-Deployment-Framework": {
+      "title": "Responsible AI Deployment Framework",
+      "theme": "ai-risk",
+      "frameworks": [
+        "Responsible AI principles"
+      ],
+      "featured": 1,
+      "context": "GlobalBank Digital Services (fictional)",
+      "problem": "A bank wants to release an AI-powered customer advisory assistant and needs a defensible way to decide whether it is ready for production.",
+      "approach": "Scores the system across seven responsible AI domains (privacy, fairness, transparency, security, accountability, reliability and safety, human oversight) with a weighted formula, readiness thresholds and risk-based approval gates.",
+      "deliverables": [
+        "Weighted scoring model",
+        "Worked readiness assessment",
+        "Governance decision tree",
+        "Required audit evidence",
+        "Continuous monitoring workflow"
+      ]
+    },
+    "Enterprise-AI-Risk-Assessment": {
+      "title": "Enterprise AI Risk Assessment",
+      "theme": "ai-risk",
+      "frameworks": [
+        "NIST AI RMF",
+        "ISO/IEC 42001"
+      ],
+      "featured": 2,
+      "context": "Financial services company (fictional)",
+      "problem": "A financial services company needs an inventory of its AI systems and a single, repeatable method for rating the risk each one carries.",
+      "approach": "Builds a 5×5 likelihood and impact methodology, applies it across a 10-system AI inventory, and completes impact assessments aligned with NIST AI RMF and ISO/IEC 42001.",
+      "deliverables": [
+        "5×5 risk methodology",
+        "10-system AI inventory",
+        "13-risk register",
+        "AI impact assessments"
+      ]
+    },
+    "eu-ai-act-article-16-provider-compliance": {
+      "title": "EU AI Act Article 16: provider compliance programme",
+      "theme": "eu-ai-act",
+      "frameworks": [
+        "EU AI Act"
+      ],
+      "featured": 3,
+      "context": "High-risk credit-scoring AI system (fictional)",
+      "problem": "A provider of a high-risk credit-scoring system must meet all twelve Article 16 obligations before placing it on the EU market.",
+      "approach": "Turns each legal obligation into practical actions with a named owner and the evidence that proves it was met.",
+      "deliverables": [
+        "Obligation-to-action map for all 12 duties",
+        "Ownership assignments",
+        "Evidence requirements"
+      ]
+    },
+    "dataflow-soc2-readiness": {
+      "title": "DataFlow Analytics: SOC 2 Type II readiness",
+      "theme": "assurance",
+      "frameworks": [
+        "SOC 2"
+      ],
+      "featured": 4,
+      "context": "AI-powered BI platform, B2B SaaS (fictional)",
+      "problem": "Fortune 500 customers of an AI-powered BI platform now require SOC 2 Type II attestation as a contractual obligation.",
+      "approach": "Working as Compliance Manager: designs controls against the Trust Services Criteria, collects evidence, tests the controls and tracks findings through remediation before the observation period.",
+      "deliverables": [
+        "Control design",
+        "Evidence collection",
+        "Control testing",
+        "Findings log",
+        "Remediation tracking"
+      ]
+    },
+    "gdpr-compliance": {
+      "title": "EuroShop GmbH: GDPR compliance programme",
+      "theme": "privacy",
+      "frameworks": [
+        "GDPR"
+      ],
+      "featured": 5,
+      "context": "27-country EU e-commerce retailer, 3M+ customers (fictional)",
+      "problem": "A retailer processing personal data for more than three million customers across 27 countries needs a working GDPR programme.",
+      "approach": "Working as Data Protection Officer: maps processing activities, identifies risks, designs controls against GDPR articles and sets up the policies that govern them.",
+      "deliverables": [
+        "Processing-activity mapping",
+        "Risk assessment",
+        "DPIAs",
+        "DSAR response procedures"
+      ]
+    },
+    "AWS-Security-Assessment-and-Hardening": {
+      "title": "AWS security assessment and hardening roadmap",
+      "theme": "assurance",
+      "frameworks": [
+        "CIS Controls",
+        "NIST CSF"
+      ],
+      "featured": 6,
+      "context": "AWS cloud environment (fictional)",
+      "problem": "An AWS environment needs a clear view of its security posture and a prioritised path to harden it.",
+      "approach": "Inventories assets, records findings, rates the resulting risks and maps remediating controls to CIS and NIST CSF.",
+      "deliverables": [
+        "Asset inventory",
+        "Findings and risk ratings",
+        "Control mapping",
+        "Hardening roadmap"
+      ]
+    },
+    "generative-ai-customer-service-risk-assessment": {
+      "title": "Generative AI customer service chatbot: pre-deployment risk assessment",
+      "theme": "ai-risk",
+      "frameworks": [
+        "NIST AI RMF",
+        "OWASP LLM Top 10"
+      ]
+    },
+    "Generative-AI-Security-Risk-and-Governance-Assessment": {
+      "title": "Generative AI security, risk and governance assessment",
+      "theme": "ai-risk",
+      "frameworks": [
+        "NIST AI RMF",
+        "OWASP LLM Top 10",
+        "NIST CSF",
+        "ISO/IEC 27001",
+        "ISO/IEC 42001"
+      ],
+      "summary": "Translates GenAI and LLM risks into guardrails, controls, owners, evidence and test plans: a 12-risk register, control catalogue, AI tool inventory and executive remediation roadmap."
+    },
+    "Third_Party_AI_Vendor_Risk_Assessment_Framework": {
+      "title": "Third-party AI vendor risk assessment",
+      "theme": "ai-risk",
+      "frameworks": [
+        "NIST AI RMF",
+        "NIST CSF",
+        "ISO/IEC 27001",
+        "ISO/IEC 42001"
+      ],
+      "summary": "Due diligence on an AI recruitment vendor: an 80-question questionnaire, vendor scorecard, risk, evidence and contract-control registers, and a conditional approval decision."
+    },
+    "High-Risk-AI-Classification-Article6-7": {
+      "title": "EU AI Act Articles 6–7: high-risk classification programme",
+      "theme": "eu-ai-act",
+      "frameworks": [
+        "EU AI Act"
+      ]
+    },
+    "article-17-qms-library-ai": {
+      "title": "EU AI Act Article 17: quality management system",
+      "theme": "eu-ai-act",
+      "frameworks": [
+        "EU AI Act"
+      ]
+    },
+    "EU_AI_Act_Article18_38_Projects": {
+      "title": "EU AI Act Articles 18–38: six-part compliance portfolio",
+      "theme": "eu-ai-act",
+      "frameworks": [
+        "EU AI Act"
+      ],
+      "summary": "Six linked projects covering documentation retention, logging, corrective action, regulator cooperation, supply-chain and deployer duties, fundamental-rights assessment and notified bodies."
+    },
+    "EU-AI-Act-Applicability-Roles-AI-Literacy": {
+      "title": "EU AI Act applicability, actor roles and AI literacy",
+      "theme": "eu-ai-act",
+      "frameworks": [
+        "EU AI Act"
+      ]
+    },
+    "Human-Oversight-Reliability-AI-Security-Testing": {
+      "title": "EU AI Act Articles 14–15: human oversight and AI security testing",
+      "theme": "eu-ai-act",
+      "frameworks": [
+        "EU AI Act"
+      ],
+      "summary": "Assurance programme for an AI security agent: a hybrid human-oversight model, robustness testing, a 15-case red-team report, pause and shutdown controls, and a conditional governance decision."
+    },
+    "AI-Governance-Portfolio-Workbook": {
+      "title": "AI governance portfolio workbook",
+      "theme": "ai-governance",
+      "frameworks": [
+        "NIST AI RMF",
+        "ISO/IEC 42001",
+        "EU AI Act"
+      ]
+    },
+    "ai-inventory-governance-gap-assessment": {
+      "title": "AI inventory and governance gap assessment",
+      "theme": "ai-governance",
+      "frameworks": [
+        "EU AI Act",
+        "ISO/IEC 42001",
+        "NIST AI RMF",
+        "OECD AI Principles"
+      ]
+    },
+    "AI_Security_Programme_Charter": {
+      "title": "AI security programme charter",
+      "theme": "ai-governance",
+      "frameworks": [
+        "ISO/IEC 42001"
+      ]
+    },
+    "Enterprise-AI-Governance-Framework": {
+      "title": "Enterprise AI governance framework: museum metadata system",
+      "theme": "ai-governance",
+      "frameworks": []
+    },
+    "enterprise-ai-system-inventory": {
+      "title": "Enterprise AI system inventory programme",
+      "theme": "ai-governance",
+      "frameworks": [],
+      "summary": "A central register of every AI system in a museum and records-management organisation, covering approved and vendor tools, internal experiments, public-facing systems and shadow AI."
+    },
+    "hr-copilot-responsible-use-policy": {
+      "title": "Microsoft 365 Copilot in HR: responsible use policy",
+      "theme": "ai-governance",
+      "frameworks": [
+        "EEOC guidance"
+      ]
+    },
+    "AI-Asset-Register-Data-Flow": {
+      "title": "AI asset register and data flow mapping",
+      "theme": "privacy",
+      "frameworks": [
+        "ISO/IEC 42001",
+        "GDPR"
+      ]
+    },
+    "IT-Risk-Assessment-OpenMRS": {
+      "title": "IT risk assessment: cloud-hosted OpenMRS EMR",
+      "theme": "assurance",
+      "frameworks": [
+        "HIPAA",
+        "ISO/IEC 27001"
+      ]
+    },
+    "ISO-27001-Risk-Assessment-for-Cloud-Migration": {
+      "title": "ISO/IEC 27001 risk assessment for a cloud migration",
+      "theme": "assurance",
+      "frameworks": [
+        "ISO/IEC 27001",
+        "NIST CSF"
+      ],
+      "summary": "A SaaS company moving 5M+ customer records to AWS while pursuing certification: asset inventory, risk assessment, Annex A controls and risk treatment plans."
+    },
+    "Third-Party-Risk-Management": {
+      "title": "Third-party risk management: payment processor due diligence",
+      "theme": "assurance",
+      "frameworks": [
+        "PCI DSS",
+        "SOC 2"
+      ],
+      "summary": "Vendor due diligence for a bank integrating a payment processor with access to cardholder data: intake, risk scoring, control verification against the vendor's SOC 2 report and a findings log."
+    },
+    "Incident-Response-Program-Development": {
+      "title": "HIPAA incident response programme toolkit",
+      "theme": "assurance",
+      "frameworks": [
+        "HIPAA"
+      ]
+    }
+  }
+}

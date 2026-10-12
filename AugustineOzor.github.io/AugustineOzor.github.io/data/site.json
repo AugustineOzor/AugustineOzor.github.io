@@ -1,0 +1,103 @@
+{
+  "url": "https://augustineozor.github.io",
+  "githubUser": "AugustineOzor",
+  "name": "Augustine Ozor",
+  "role": "AI Governance & Cybersecurity GRC",
+  "location": "Doha, Qatar",
+  "headline": "Turning responsible AI principles into working controls.",
+  "summary": "I help organisations govern AI systems: inventories, risk registers, policies and compliance programmes mapped to the EU AI Act, ISO/IEC 42001, NIST AI RMF and ISO/IEC 27001, with evidence an auditor can follow.",
+  "email": "augustineozor@gmail.com",
+  "links": {
+    "github": "https://github.com/AugustineOzor",
+    "linkedin": "https://www.linkedin.com/in/augustinetettehozor/",
+    "medium": "https://medium.com/@augustineozor"
+  },
+  "about": "I work where engineering, audit and the business meet. My background spans enterprise cybersecurity, information science and cloud security, and my job is translating technical risk into clear controls, documentation and remediation actions that all three can agree on.",
+  "expertise": [
+    "AI risk registers and impact assessments",
+    "Responsible AI policy and human oversight",
+    "EU AI Act, ISO/IEC 42001 and NIST AI RMF",
+    "AI vendor and third-party risk management",
+    "ISO/IEC 27001, NIST 800-53 and SOC 2",
+    "ITGCs, control testing and audit evidence",
+    "AWS and Azure security, IAM and encryption",
+    "Vulnerability management and continuous compliance"
+  ],
+  "certifications": {
+    "held": [
+      "ISO/IEC 27001:2022 Lead Auditor",
+      "AWS Certified Solutions Architect",
+      "AWS Certified AI Practitioner",
+      "ISC2 Certified in Cybersecurity (CC)",
+      "Microsoft Cloud and Cybersecurity Certificate"
+    ],
+    "inProgress": [
+      "IAPP AIGP",
+      "ISACA CISA",
+      "CompTIA Security+"
+    ]
+  },
+  "experience": [
+    {
+      "role": "GRC Analyst",
+      "org": "NextTech Solutions",
+      "period": "Jul 2025 – present",
+      "place": "Remote (Dallas, US)",
+      "detail": ""
+    },
+    {
+      "role": "Associate Cloud Engineer",
+      "org": "Jomacs IT Services",
+      "period": "Jun 2021 – Jun 2022",
+      "place": "Remote (Alberta, Canada)",
+      "detail": "AWS and Azure security, IAM/RBAC, vulnerability remediation and CI/CD compliance."
+    },
+    {
+      "role": "Technology Instructor & IT Support",
+      "org": "Ghana Education Service",
+      "period": "Sep 2013 – Aug 2019",
+      "place": "Ghana",
+      "detail": "ICT and cyber-awareness training, endpoint security and phishing-prevention workshops."
+    }
+  ],
+  "education": [
+    {
+      "degree": "MSc, Enterprise Cybersecurity",
+      "school": "Open Institute of Technology (OPIT)",
+      "year": "2026"
+    },
+    {
+      "degree": "MA, Information Science",
+      "school": "University College London (UCL)",
+      "year": "2019–2020"
+    },
+    {
+      "degree": "Diploma, Information Technology",
+      "school": "OTHM International",
+      "year": "2020"
+    },
+    {
+      "degree": "Bachelor of Education",
+      "school": "University of Education, Winneba",
+      "year": "2014–2016"
+    }
+  ],
+  "publications": [
+    {
+      "title": "Information Literacy Behavior and Practice: An Assessment of Undergraduate Students at Ada College of Education, Ghana",
+      "venue": "Journal of Library Administration",
+      "url": "https://doi.org/10.1080/01930826.2021.2006992"
+    },
+    {
+      "title": "Cloud Misconfiguration Vulnerabilities and Governance Practices in Enterprise Environments",
+      "venue": "MSc dissertation, OPIT (unpublished)",
+      "url": ""
+    }
+  ],
+  "memberships": [
+    "ISACA",
+    "ISC2",
+    "Internet Society",
+    "GRC Engineering Club"
+  ]
+}

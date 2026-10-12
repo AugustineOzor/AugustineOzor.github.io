@@ -1,0 +1,232 @@
+[
+ {
+  "name": "AI-Asset-Register-Data-Flow",
+  "description": "Cortexa AI Inc.'s founding AI asset inventory — 25 assets across Copilot, Search, Agents, and shared infrastructure, a four-tier sensitivity classification matrix, and a Level-0 data flow diagram marking every trust-boundary crossing. ISO/IEC 42001 Clause 8.3 · GDPR Art. 30.",
+  "pushed_at": "2026-09-14T15:39:02Z",
+  "stargazers_count": 0,
+  "homepage": null,
+  "topics": []
+ },
+ {
+  "name": "AI-Governance-Maturity-Assessment-Toolkit",
+  "description": null,
+  "pushed_at": "2026-08-26T20:19:03Z",
+  "stargazers_count": 0,
+  "homepage": null,
+  "topics": []
+ },
+ {
+  "name": "AI-Governance-Portfolio-Workbook",
+  "description": "A practical demonstration of AI inventory management, risk categorisation, governance control assessment, gap analysis, and executive reporting — six AI systems, eight risks, eight gaps, aligned with NIST AI RMF, ISO/IEC 42001, and the EU AI Act.",
+  "pushed_at": "2026-09-28T15:52:12Z",
+  "stargazers_count": 0,
+  "homepage": null,
+  "topics": []
+ },
+ {
+  "name": "ai-inventory-governance-gap-assessment",
+  "description": "Practical AI governance case study: inventory, risk categorization, and governance gap assessment for organizational AI systems, mapped to the EU AI Act, ISO/IEC 42001, NIST AI RMF, and OECD AI Principles.",
+  "pushed_at": "2026-08-26T20:11:37Z",
+  "stargazers_count": 0,
+  "homepage": null,
+  "topics": []
+ },
+ {
+  "name": "AI_Security_Programme_Charter",
+  "description": "AI Security Programme Charter for a fictional enterprise SaaS company — scope, objectives, stakeholder map, RACI, a phased rollout timeline, and an ISO/IEC 42001 Clause 5 (Leadership) mapping, ready for CISO sign-off.",
+  "pushed_at": "2026-09-05T18:42:45Z",
+  "stargazers_count": 0,
+  "homepage": null,
+  "topics": []
+ },
+ {
+  "name": "article-17-qms-library-ai",
+  "description": "AI governance case study applying EU AI Act Article 17 (Quality Management System) to a high-risk AI academic integrity screening system for a university library digital repository.",
+  "pushed_at": "2026-08-30T20:47:37Z",
+  "stargazers_count": 0,
+  "homepage": null,
+  "topics": []
+ },
+ {
+  "name": "AugustineOzor",
+  "description": "Github Profile README",
+  "pushed_at": "2026-10-10T18:06:27Z",
+  "stargazers_count": 0,
+  "homepage": null,
+  "topics": []
+ },
+ {
+  "name": "AWS-Security-Assessment-and-Hardening",
+  "description": "AWS security assessment and hardening roadmap: assets, findings, risks and controls (CIS, NIST CSF)",
+  "pushed_at": "2026-10-10T11:06:17Z",
+  "stargazers_count": 0,
+  "homepage": null,
+  "topics": []
+ },
+ {
+  "name": "dataflow-soc2-readiness",
+  "description": "SOC 2 Type II readiness case study for an AI-powered BI platform — control design, evidence, testing, findings, and remediation as Compliance Manager.",
+  "pushed_at": "2026-10-03T09:19:31Z",
+  "stargazers_count": 0,
+  "homepage": null,
+  "topics": []
+ },
+ {
+  "name": "Enterprise-AI-Governance-Framework",
+  "description": "An AI governance and risk management framework for a museum metadata enhancement system, covering AI inventory, data governance, metadata quality, risk assessment, responsible AI, human oversight, monitoring, incident response, and audit readiness.",
+  "pushed_at": "2026-09-10T21:11:32Z",
+  "stargazers_count": 0,
+  "homepage": null,
+  "topics": []
+ },
+ {
+  "name": "Enterprise-AI-Risk-Assessment",
+  "description": "An enterprise AI risk assessment & inventory for a financial services company — a 5×5 risk methodology, a 10-system inventory, a 13-risk register, and impact assessments aligned with NIST AI RMF and ISO/IEC 42001.",
+  "pushed_at": "2026-09-11T19:14:39Z",
+  "stargazers_count": 0,
+  "homepage": null,
+  "topics": []
+ },
+ {
+  "name": "enterprise-ai-system-inventory",
+  "description": "This project creates a real-world AI System Inventory Program for a museum, cultural heritage, metadata, and records-management environment.",
+  "pushed_at": "2026-08-11T21:08:14Z",
+  "stargazers_count": 0,
+  "homepage": null,
+  "topics": []
+ },
+ {
+  "name": "EU-AI-Act-Applicability-Roles-AI-Literacy",
+  "description": "EU AI Act applicability assessment — actor classification (provider/deployer/importer), a regulatory definitions register, and a role-based AI literacy programme for a technology organization.",
+  "pushed_at": "2026-09-02T20:49:29Z",
+  "stargazers_count": 0,
+  "homepage": null,
+  "topics": []
+ },
+ {
+  "name": "eu-ai-act-article-16-provider-compliance",
+  "description": "Operational compliance program for Article 16 of the EU AI Act — maps all 12 provider obligations to practical actions, ownership, and evidence, using a high-risk credit-scoring AI system as the working case study.",
+  "pushed_at": "2026-08-30T21:13:41Z",
+  "stargazers_count": 0,
+  "homepage": null,
+  "topics": []
+ },
+ {
+  "name": "EU_AI_Act_Article18_38_Projects",
+  "description": "Developed six interconnected AI governance portfolio projects covering EU AI Act Articles 18–38.",
+  "pushed_at": "2026-10-09T09:12:24Z",
+  "stargazers_count": 0,
+  "homepage": "",
+  "topics": []
+ },
+ {
+  "name": "gdpr-compliance",
+  "description": "GDPR compliance program for a 27-country EU e-commerce retailer — processing-activity mapping, risk assessment, DPIAs, and DSAR response procedures as DPO",
+  "pushed_at": "2026-10-03T18:57:21Z",
+  "stargazers_count": 0,
+  "homepage": null,
+  "topics": []
+ },
+ {
+  "name": "generative-ai-customer-service-risk-assessment",
+  "description": "Pre-deployment AI risk assessment of a generative AI customer service chatbot — risk register, NIST AI RMF crosswalk, OWASP LLM Top 10 security review, and governance decision. Fictional portfolio case study.",
+  "pushed_at": "2026-08-21T18:21:38Z",
+  "stargazers_count": 0,
+  "homepage": "",
+  "topics": [
+   "ai-governance",
+   "ai-risk-assessment",
+   "grc",
+   "nist-ai-rmf",
+   "owasp-llm-top-10"
+  ]
+ },
+ {
+  "name": "Generative-AI-Security-Risk-and-Governance-Assessment",
+  "description": "Assessing key Generative AI and LLM risks and mapping them to practical security and governance controls.",
+  "pushed_at": "2026-09-14T18:23:58Z",
+  "stargazers_count": 0,
+  "homepage": "",
+  "topics": []
+ },
+ {
+  "name": "High-Risk-AI-Classification-Article6-7",
+  "description": "EU AI Act Articles 6 & 7 programme — AI inventory, a 12-question classification questionnaire, six worked high-risk assessments, an exception framework, and regulatory change monitoring for six systems at a fictional enterprise.",
+  "pushed_at": null,
+  "stargazers_count": 0,
+  "homepage": null,
+  "topics": []
+ },
+ {
+  "name": "hr-copilot-responsible-use-policy",
+  "description": "Governance-ready policy for the responsible use of Microsoft 365 Copilot within Human Resources — approved and prohibited uses, human review requirements, and data handling rules.",
+  "pushed_at": null,
+  "stargazers_count": 0,
+  "homepage": null,
+  "topics": []
+ },
+ {
+  "name": "IT-Risk-Assessment-OpenMRS",
+  "description": "IT risk assessment of a cloud-hosted OpenMRS EMR (AWS EC2 + RDS) — security, availability, and HIPAA/NIST/ISO 27001 compliance findings for a hospital case study.",
+  "pushed_at": null,
+  "stargazers_count": 0,
+  "homepage": null,
+  "topics": []
+ },
+ {
+  "name": "microsoft365-copilot-public-ai-risk-asessment",
+  "description": "AI governance and risk management framework for a museum metadata enhancement system, covering AI inventory, risk assessment, responsible AI, controls, human oversight, monitoring, and audit readiness.",
+  "pushed_at": null,
+  "stargazers_count": 0,
+  "homepage": null,
+  "topics": []
+ },
+ {
+  "name": "Responsible-AI-Deployment-Framework",
+  "description": "Pre-deployment governance framework that scores AI systems across privacy, fairness, transparency, security, accountability, reliability, and human oversight — with automated scoring, risk-based approval gates, and continuous monitoring.",
+  "pushed_at": null,
+  "stargazers_count": 1,
+  "homepage": null,
+  "topics": []
+ },
+ {
+  "name": "Third-Party-Risk-Management",
+  "description": null,
+  "pushed_at": null,
+  "stargazers_count": 0,
+  "homepage": null,
+  "topics": []
+ },
+ {
+  "name": "Third_Party_AI_Vendor_Risk_Assessment_Framework",
+  "description": "An AI governance and risk management framework for a museum metadata enhancement system, covering AI inventory, data governance, metadata quality, risk assessment, responsible AI, human oversight, monitoring, incident response, and audit readiness.",
+  "pushed_at": null,
+  "stargazers_count": 0,
+  "homepage": null,
+  "topics": []
+ },
+ {
+  "name": "ISO-27001-Risk-Assessment-for-Cloud-Migration",
+  "description": "TechStart Inc, a B2B SaaS company, is migrating their customer database containing 5M+ records from on-premises to AWS. They are pursuing ISO 27001:2022 certification to meet enterprise client requirements.",
+  "pushed_at": null,
+  "stargazers_count": 0,
+  "homepage": null,
+  "topics": []
+ },
+ {
+  "name": "Incident-Response-Program-Development",
+  "description": "HIPAA incident response toolkit for a fictional EHR provider: assets, incidents, controls and tasks",
+  "pushed_at": null,
+  "stargazers_count": 0,
+  "homepage": null,
+  "topics": []
+ },
+ {
+  "name": "Human-Oversight-Reliability-AI-Security-Testing",
+  "description": "EU AI Act Articles 14 & 15 assurance program for an AI security agent — hybrid oversight model, accuracy/robustness testing, a 15-case red-team report, pause/shutdown controls, and a conditional advisory-only governance decision.",
+  "pushed_at": null,
+  "stargazers_count": 0,
+  "homepage": null,
+  "topics": []
+ }
+]

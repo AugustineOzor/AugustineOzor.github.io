@@ -1,0 +1,11 @@
+{
+  "name": "augustine-ozor-portfolio",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "build:offline": "node scripts/build.mjs --offline",
+    "preview": "python3 -m http.server 8080 --directory dist"
+  },
+  "engines": { "node": ">=18" }
+}

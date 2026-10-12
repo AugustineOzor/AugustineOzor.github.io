@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>{{TITLE}}</title>
+  <meta name="description" content="{{DESCRIPTION}}">
+  <link rel="canonical" href="{{URL}}/">
+  <meta property="og:type" content="profile">
+  <meta property="og:title" content="{{TITLE}}">
+  <meta property="og:description" content="{{DESCRIPTION}}">
+  <meta property="og:url" content="{{URL}}/">
+  <meta property="og:image" content="{{URL}}/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta property="og:image:alt" content="{{NAME}}, {{ROLE}}">
+  <meta name="theme-color" content="#F4F6F3" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#10161C" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap">
+  <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+  <script type="application/ld+json">{{JSONLD}}</script>
+  <style>
+{{CSS}}
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="#top">
+        <img class="avatar" src="{{AVATAR}}" alt="Portrait of {{NAME}}" width="100" height="100">
+        <span class="brand-text"><span class="brand-name">{{NAME}}</span><span class="brand-role">{{ROLE}}</span></span>
+      </a>
+      <nav aria-label="Primary">
+        <ul>
+          <li><a href="#work">Work</a></li>
+          <li><a href="#register">All projects</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Switch to dark theme">
+        <svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M12 3a9 9 0 1 0 9 9c0-.5 0-.9-.1-1.3A6 6 0 0 1 12.3 3.1L12 3Z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section id="reader" class="reader wrap" aria-label="Case study" hidden>
+      <div class="reader-bar">
+        <button type="button" class="back-button" id="reader-back">Back to case studies</button>
+      </div>
+      <div id="reader-body"></div>
+      <nav class="reader-pager" id="reader-pager" aria-label="More case studies"></nav>
+    </section>
+
+    <section class="hero wrap" id="top" aria-labelledby="hero-title">
+      <div class="hero-text">
+        <p class="hero-id">Based in {{LOCATION}}</p>
+        <h1 id="hero-title">{{HEADLINE}}</h1>
+        <p class="hero-summary">{{SUMMARY}}</p>
+        <ul class="actions">
+          <li><a class="button button-primary" href="#work">View case studies</a></li>
+          <li><a class="button" href="{{CONTACT_PRIMARY}}">Contact me</a></li>
+          <li><a class="link" href="{{LINKEDIN}}">LinkedIn</a></li>
+          <li><a class="link" href="{{GITHUB}}">GitHub</a></li>
+        </ul>
+      </div>
+
+      <aside class="ledger" aria-labelledby="ledger-title">
+        <h2 id="ledger-title">Framework coverage</h2>
+        <p class="ledger-intro">{{PROJECT_COUNT}} case studies mapped across {{FRAMEWORK_COUNT}} frameworks and regulations. Select one to see the work.</p>
+        <ul class="ledger-list">{{LEDGER}}
+        </ul>
+      </aside>
+    </section>
+
+    <section class="section wrap" id="focus" aria-labelledby="focus-title">
+      <h2 id="focus-title">Focus areas</h2>
+      <ul class="focus-list">{{FOCUS}}
+      </ul>
+    </section>
+
+    <section class="section wrap" id="work" aria-labelledby="work-title">
+      <div class="section-head">
+        <h2 id="work-title">Selected case studies</h2>
+        <p>Each one is a complete engagement write-up on GitHub: the problem, the method, and the artefacts a reviewer or auditor would expect to see.</p>
+      </div>
+      <div class="cases">{{FEATURED}}
+      </div>
+    </section>
+
+    <section class="section wrap" id="register" aria-labelledby="register-title">
+      <div class="section-head">
+        <h2 id="register-title">Case study register</h2>
+        <p>Every public project in the portfolio.</p>
+      </div>
+
+      <div class="filters" role="search" aria-label="Filter case studies">
+        <div class="field field-search">
+          <label for="f-q">Search</label>
+          <input id="f-q" type="search" placeholder="Try “DPIA” or “credit scoring”" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="f-theme">Focus area</label>
+          <select id="f-theme"><option value="">All areas</option>{{THEME_OPTIONS}}</select>
+        </div>
+        <div class="field">
+          <label for="f-fw">Framework</label>
+          <select id="f-fw"><option value="">All frameworks</option>{{FW_OPTIONS}}</select>
+        </div>
+        <button type="button" class="text-button" id="f-clear" hidden>Clear filters</button>
+      </div>
+      <p class="result-count" id="result-count" aria-live="polite">Showing all {{PROJECT_COUNT}} case studies</p>
+
+      <div class="table-wrap">
+        <table class="register">
+          <caption class="sr-only">Case study register</caption>
+          <thead>
+            <tr><th scope="col">Case study</th><th scope="col">Area</th><th scope="col">Frameworks</th></tr>
+          </thead>
+          <tbody id="register-body">{{ROWS}}
+          </tbody>
+        </table>
+        <p class="empty" id="empty" hidden>No case studies match these filters. <button type="button" class="text-button" data-clear>Clear filters</button></p>
+      </div>
+    </section>
+
+    <section class="section wrap about" id="about" aria-labelledby="about-title">
+      <div class="about-intro">
+        <h2 id="about-title">About</h2>
+        <p class="lede">{{ABOUT}}</p>
+        <h3>Core expertise</h3>
+        <ul class="plain-list">{{EXPERTISE}}</ul>
+      </div>
+      <div class="about-detail">
+        <h3>Experience</h3>
+        <ol class="timeline">{{EXPERIENCE}}</ol>
+
+        <h3>Certifications</h3>
+        <div class="certs">
+          <div><h4>Held</h4><ul class="plain-list">{{CERTS_HELD}}</ul></div>
+          <div><h4>In progress</h4><ul class="plain-list">{{CERTS_PROGRESS}}</ul></div>
+        </div>
+
+        <h3>Education</h3>
+        <ul class="plain-list stacked">{{EDUCATION}}</ul>
+
+        <h3>Research</h3>
+        <ul class="plain-list stacked">{{PUBLICATIONS}}</ul>
+
+        <h3>Memberships</h3>
+        <p>{{MEMBERSHIPS}}</p>
+      </div>
+    </section>
+
+    <section class="section wrap" id="architecture" aria-labelledby="arch-title">
+      <div class="section-head">
+        <h2 id="arch-title">How I structure AI governance</h2>
+        <p>The operating model behind my case studies: governance sets direction, every AI system moves through a controlled lifecycle, and assurance proves the controls work.</p>
+      </div>{{ARCHITECTURE}}
+    </section>
+
+    <section class="section wrap contact" id="contact" aria-labelledby="contact-title">
+      <h2 id="contact-title">Open to AI governance and GRC roles, consulting and collaboration.</h2>
+      <p>Based in {{LOCATION}} and working with teams remotely.</p>
+      <ul class="contact-links">{{CONTACT_LINKS}}</ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>© {{YEAR}} {{NAME}}. Case studies use fictional organisations and synthetic data, and are not legal advice or formal conformity assessments.</p>
+      <p>Updated {{BUILT}}.</p>
+    </div>
+  </footer>
+
+  {{READER_TEMPLATES}}
+  <script id="case-order" type="application/json">{{CASE_ORDER}}</script>
+  <script>
+{{JS}}
+  </script>
+</body>
+</html>
