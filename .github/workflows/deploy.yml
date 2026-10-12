@@ -26,12 +26,12 @@ jobs:
           node-version: 20
       - name: Build site from GitHub repos
         run: node scripts/build.mjs
+        working-directory: AugustineOzor.github.io
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/upload-pages-artifact@v3
         with:
-
-          path: dist
+          path: AugustineOzor.github.io/dist
 
   deploy:
     needs: build
