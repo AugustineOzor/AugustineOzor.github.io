@@ -157,5 +157,9 @@
     "Azure Arc",
     "Cisco Packet Tracer",
     "AWS Inspector"
-  ]
+  ],
+  "quote": {
+    "text": "Security is a process, not a product.",
+    "author": "Bruce Schneier"
+  }
 }

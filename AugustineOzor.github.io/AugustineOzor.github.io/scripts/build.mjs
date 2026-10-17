@@ -497,6 +497,9 @@ const tokens = {
   CASE_ORDER: caseOrder,
   SKILLS_MAP: skillsMap,
   GLANCE: glanceHTML,
+  QUOTE: site.quote
+    ? `<figure class="hero-quote"><blockquote><p>${esc(site.quote.text)}</p></blockquote><figcaption>${esc(site.quote.author)}</figcaption></figure>`
+    : "",
   ARCHITECTURE: archHTML,
   CLOUD: cloudHTML,
   LABS: labsHTML,
