@@ -11,6 +11,7 @@ import { readFile, writeFile, mkdir, copyFile, readdir } from "node:fs/promises"
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 import { loadContent, slugOf } from "./content.mjs";
+import { fwIcon } from "./icons.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const p = (...s) => path.join(root, ...s);
@@ -106,6 +107,96 @@ const { content, warnings: contentWarnings } = await loadContent({
 });
 warnings.push(...contentWarnings);
 
+// ---------- 2c. Cloud projects (Medium) ----------
+const cloud = await readJSON("data/cloud.json");
+async function fetchMediumPosts(user) {
+  const res = await fetch(`https://medium.com/feed/@${user}`, { headers: { "User-Agent": "portfolio-build" } });
+  if (!res.ok) throw new Error(`Medium feed ${res.status}`);
+  const xml = await res.text();
+  const strip = (s = "") => s.replace(/<!\[CDATA\[|\]\]>/g, "").trim();
+  return [...xml.matchAll(/<item>([\s\S]*?)<\/item>/g)].map(([, item]) => {
+    const get = (tag) => strip((item.match(new RegExp(`<${tag}>([\\s\\S]*?)<\\/${tag}>`)) || [])[1]);
+    const html = get("content:encoded");
+    const firstP = (html.match(/<p>([\s\S]*?)<\/p>/) || [])[1] || "";
+    const text = firstP.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
+    return {
+      title: get("title"),
+      url: get("link").split("?")[0],
+      category: "other",
+      services: [...item.matchAll(/<category>([\s\S]*?)<\/category>/g)].map((m) => strip(m[1])).slice(0, 3),
+      summary: text.length > 170 ? text.slice(0, 167).replace(/\s+\S*$/, "") + "…" : text,
+    };
+  });
+}
+const postId = (u) => (u.match(/([0-9a-f]{10,})\/?$/) || [, u])[1];
+let cloudPosts = [...cloud.posts];
+if (!offline) {
+  try {
+    const known = new Set(cloudPosts.map((x) => postId(x.url)));
+    const fresh = (await fetchMediumPosts(cloud.medium)).filter((x) => x.title && !known.has(postId(x.url)));
+    cloudPosts = [...fresh, ...cloudPosts];
+    if (fresh.length) warnings.push(`New Medium posts added under "Other cloud work": ${fresh.map((x) => x.title).join("; ")}. Set their category in data/cloud.json.`);
+  } catch (err) {
+    warnings.push(`Could not read the Medium feed (${err.message}); using data/cloud.json only.`);
+  }
+}
+const cloudHTML = cloud.categories
+  .map((c) => {
+    const items = cloudPosts.filter((x) => (x.category || "other") === c.id);
+    if (!items.length) return "";
+    return `
+        <div class="cloud-group">
+          <h3>${esc(c.name)}</h3>
+          <ul class="cloud-grid">${items
+            .map(
+              (x) => `
+            <li class="cloud-card">
+              <a href="${esc(x.url)}" rel="noopener">
+                <span class="cloud-services">${esc((x.services || []).join(" · "))}</span>
+                <span class="cloud-title">${esc(x.title)}</span>
+                <span class="cloud-summary">${esc(x.summary || "")}</span>
+                <span class="cloud-cta">Read on Medium</span>
+              </a>
+            </li>`
+            )
+            .join("")}
+          </ul>
+        </div>`;
+  })
+  .join("");
+
+// ---------- 2d. Security labs (evidence portfolio) ----------
+const sec = await readJSON("data/security.json");
+const projSlugs = new Set(projects.map((x) => x.slug));
+const labsHTML = sec.groups
+  .map((g) => {
+    const items = sec.items.filter((x) => x.group === g.id);
+    if (!items.length) return "";
+    return `
+        <div class="cloud-group">
+          <h3>${esc(g.name)}</h3>
+          <ul class="cloud-grid">${items
+            .map((x) => {
+              const link = x.evidence || sec.evidenceFolder;
+              const inner = `
+                <span class="cloud-services">${esc(x.tags.join(" · "))}</span>
+                <span class="cloud-title">${esc(x.title)}</span>
+                <span class="cloud-summary">${esc(x.summary)}</span>
+                <span class="lab-meta">${x.docs} evidence ${x.docs === 1 ? "document" : "documents"}</span>
+                ${link ? `<span class="cloud-cta">View evidence</span>` : ""}`;
+              const related = x.related && projSlugs.has(x.related) ? `<a class="lab-related" href="#read/${x.related}">Related project</a>` : "";
+              return `
+            <li class="cloud-card">${link ? `<a href="${esc(link)}" rel="noopener">${inner}</a>` : `<div class="lab-static">${inner}</div>`}${related}</li>`;
+            })
+            .join("")}
+          </ul>
+        </div>`;
+  })
+  .join("");
+const labsNote = sec.evidenceFolder
+  ? `<a href="${esc(sec.evidenceFolder)}" rel="noopener">Browse the full evidence portfolio</a>`
+  : `Full evidence documents are available on request.`;
+
 // ---------- 3. Render ----------
 function prettify(name) {
   return name.replace(/[-_]+/g, " ").replace(/\s+/g, " ").trim();
@@ -147,9 +238,9 @@ const ledgerHTML = frameworks
   .map(
     ([name, n], i) => `
         <li><button type="button" class="ledger-row" data-filter-fw="${esc(name)}" aria-pressed="false">
-          <span class="ledger-name">${esc(name)}</span>
+          <span class="ledger-name">${fwIcon(name)}<span>${esc(name)}</span></span>
           <span class="ledger-bar" aria-hidden="true"><span style="--w:${((n / ledgerMax) * 100).toFixed(1)}%;--i:${i}"></span></span>
-          <span class="ledger-count">${n}<span class="sr-only"> case studies</span></span>
+          <span class="ledger-count">${n}<span class="sr-only"> projects</span></span>
         </button></li>`
   )
   .join("");
@@ -162,7 +253,7 @@ const focusHTML = themes
       <li class="focus-item">
         <h3>${esc(t.name)}</h3>
         <p>${esc(t.blurb)}</p>
-        <button type="button" class="text-button" data-filter-theme="${t.id}">View ${n} case ${n === 1 ? "study" : "studies"}</button>
+        <button type="button" class="text-button" data-filter-theme="${t.id}">View ${n} ${n === 1 ? "project" : "projects"}</button>
       </li>`;
   })
   .join("");
@@ -177,7 +268,7 @@ const featuredHTML = featured
             <h3 class="banner-title">${esc(x.title)}</h3>
             ${x.context ? `<span class="banner-context">${esc(x.context)}</span>` : ""}
             ${x.frameworks.length ? `<span class="banner-fw">Frameworks: ${esc(x.frameworks.join(", "))}</span>` : ""}
-            <span class="banner-cta">Read the case study</span>
+            <span class="banner-cta">Read the project</span>
           </div>
           ${matrixSVG(x.name)}
         </a>
@@ -199,7 +290,7 @@ const rowsHTML = projects
           <tr data-theme="${x.theme}" data-fw="${esc(x.frameworks.join("|"))}" data-text="${esc((x.title + " " + x.summary + " " + x.frameworks.join(" ")).toLowerCase())}">
             <td class="col-title"><a href="#read/${x.slug}">${esc(x.title)}</a>${x.summary ? `<p>${esc(x.summary)}</p>` : ""}</td>
             <td class="col-area" data-label="Area">${esc(themeName[x.theme])}</td>
-            <td class="col-fw" data-label="Frameworks">${fwList(x.frameworks)}</td>
+            <td class="col-fw" data-label="Frameworks">${x.frameworks.length ? `<ul class="fw-chips">${x.frameworks.map((f) => `<li>${fwIcon(f)}${esc(f)}</li>`).join("")}</ul>` : "None listed"}</td>
           </tr>`
   )
   .join("");
@@ -218,7 +309,7 @@ function readerHTML(x) {
       </dl>
     </header>`;
   const toc = docs.length > 1
-    ? `<nav class="doc-nav" aria-label="Documents in this case study"><h2>In this case study</h2><ol>${docs.map((d, i) => `<li><a href="#read/${x.slug}/${i}">${esc(d.title)}</a></li>`).join("")}</ol></nav>`
+    ? `<nav class="doc-nav" aria-label="Documents in this project"><h2>In this project</h2><ol>${docs.map((d, i) => `<li><a href="#read/${x.slug}/${i}">${esc(d.title)}</a></li>`).join("")}</ol></nav>`
     : "";
   const body = docs.length
     ? docs.map((d, i) => `<section class="doc" id="doc-${i}">${docs.length > 1 || i > 0 ? `<h2 class="doc-title">${esc(d.title)}</h2>` : ""}${d.html}</section>`).join("")
@@ -309,13 +400,12 @@ const contactLinks = [
   site.links.medium && `<li><a href="${esc(site.links.medium)}">Medium</a></li>`,
 ].filter(Boolean).join("");
 
-const description = `${site.name}: ${site.role} in ${site.location}. ${site.summary}`;
+const description = `${site.name}: ${site.role}. ${site.summary}`;
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
   name: site.name,
   jobTitle: site.role,
-  address: { "@type": "PostalAddress", addressLocality: "Doha", addressCountry: "QA" },
   url: site.url,
   sameAs: Object.values(site.links).filter(Boolean),
   ...(site.email ? { email: `mailto:${site.email}` } : {}),
@@ -325,8 +415,12 @@ const avatarFile = p("public/avatar.jpg");
 let AVATAR = "";
 try { AVATAR = `data:image/jpeg;base64,${(await readFile(avatarFile)).toString("base64")}`; } catch {}
 
+let PORTRAIT = "";
+try { PORTRAIT = `data:image/jpeg;base64,${(await readFile(p("public/portrait.jpg"))).toString("base64")}`; } catch {}
+
 const tokens = {
   AVATAR,
+  PORTRAIT,
   TITLE: esc(`${site.name} | ${site.role}`),
   DESCRIPTION: esc(description),
   URL: esc(site.url),
@@ -335,7 +429,6 @@ const tokens = {
   JS: await readFile(p("src/app.js"), "utf8"),
   NAME: esc(site.name),
   ROLE: esc(site.role),
-  LOCATION: esc(site.location),
   HEADLINE: esc(site.headline),
   SUMMARY: esc(site.summary),
   ABOUT: esc(site.about),
@@ -360,6 +453,13 @@ const tokens = {
   CONTACT_LINKS: contactLinks,
   CASE_ORDER: caseOrder,
   ARCHITECTURE: archHTML,
+  CLOUD: cloudHTML,
+  LABS: labsHTML,
+  LABS_INTRO: esc(sec.intro),
+  LABS_NOTE: labsNote,
+  CLOUD_INTRO: esc(cloud.intro),
+  CLOUD_COUNT: String(cloudPosts.length),
+  MEDIUM: esc(site.links.medium),
   READER_TEMPLATES: readerTemplates,
   YEAR: String(new Date().getUTCFullYear()),
   BUILT: new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }),

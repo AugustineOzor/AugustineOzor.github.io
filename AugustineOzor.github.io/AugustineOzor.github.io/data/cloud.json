@@ -1,0 +1,24 @@
+{
+  "medium": "augustineozor",
+  "intro": "Hands-on AWS engineering that grounds my cloud security and audit work: I have built and secured the services I now assess.",
+  "categories": [
+    { "id": "security", "name": "Security and encryption" },
+    { "id": "storage", "name": "Storage and resilience" },
+    { "id": "compute", "name": "Compute and scaling" },
+    { "id": "iac", "name": "Infrastructure as code" },
+    { "id": "hosting", "name": "Web hosting and delivery" },
+    { "id": "other", "name": "Other cloud work" }
+  ],
+  "posts": [
+    { "title": "Enforce encryption with AWS KMS", "url": "https://medium.com/@augustineozor/enforce-encryption-with-aws-kms-2d94770391bc", "category": "security", "services": ["AWS KMS"], "summary": "Using customer-managed keys in AWS Key Management Service to enforce encryption of data at rest." },
+    { "title": "Creating a secure CloudFront distribution", "url": "https://medium.com/@augustineozor/creating-a-secure-cloudfront-distribution-8363730f0d8c", "category": "security", "services": ["CloudFront"], "summary": "Securing and optimising content delivery for a scalable, low-latency experience worldwide." },
+    { "title": "Configure replication and lifecycle in AWS S3", "url": "https://medium.com/@augustineozor/configure-replication-and-lifecycle-in-aws-s3-4a9dc4d103f6", "category": "storage", "services": ["Amazon S3"], "summary": "Source and destination buckets with cross-bucket replication and lifecycle rules for retention and cost control." },
+    { "title": "Scalable storage with AWS EFS across multiple Availability Zones", "url": "https://medium.com/@augustineozor/implementing-scalable-storage-solution-with-aws-efs-across-multiple-availability-zones-f470cc5ae4e0", "category": "storage", "services": ["Amazon EFS", "Amazon EC2"], "summary": "Shared, highly available file storage mounted across instances in multiple Availability Zones." },
+    { "title": "Amazon EBS volume lab", "url": "https://medium.com/@augustineozor/detailed-amazon-ebs-volume-lab-project-b281fe9f1545", "category": "storage", "services": ["Amazon EBS", "Amazon EC2"], "summary": "Creating, attaching and formatting EBS volumes, setting up file systems and managing data." },
+    { "title": "AWS Auto Scaling and load balancing", "url": "https://medium.com/@augustineozor/aws-auto-scaling-and-load-balancing-ef30f69f5204", "category": "compute", "services": ["EC2 Auto Scaling", "Elastic Load Balancing"], "summary": "Scaling a web tier automatically with demand behind a load balancer, built around a business use case." },
+    { "title": "Using user data and metadata in AWS", "url": "https://medium.com/@augustineozor/using-user-data-and-metadata-in-aws-83c20d1987ff", "category": "compute", "services": ["Amazon EC2"], "summary": "Bootstrapping instances with user data and reading instance metadata to manage cloud resources." },
+    { "title": "CloudFormation stack", "url": "https://medium.com/@augustineozor/cloudformation-stack-feb368881102", "category": "iac", "services": ["AWS CloudFormation"], "summary": "Defining and deploying AWS resources as code so environments are repeatable and auditable." },
+    { "title": "Static website hosting on S3 with Route 53 and CloudFront", "url": "https://medium.com/@augustineozor/static-website-hosting-host-a-website-on-s3-with-route-53-cloud-front-8da68ca6378b", "category": "hosting", "services": ["Amazon S3", "Route 53", "CloudFront"], "summary": "Hosting a static site on S3 with a custom domain in Route 53 and global delivery through CloudFront." },
+    { "title": "WordPress blog deployment on AWS Lightsail", "url": "https://medium.com/@augustineozor/cloud-based-web-hosting-solutions-wordpress-blog-deployment-on-aws-lightsail-991f877f9631", "category": "hosting", "services": ["Amazon Lightsail", "WordPress"], "summary": "Deploying and configuring a WordPress blog on Amazon Lightsail as a cloud-based hosting solution." }
+  ]
+}

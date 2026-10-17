@@ -1,0 +1,117 @@
+{
+  "intro": "Hands-on security operations, audit and infrastructure labs, each documented with step-by-step evidence.",
+  "evidenceFolder": "",
+  "groups": [
+    { "id": "audit", "name": "GRC and IT audit" },
+    { "id": "monitoring", "name": "Security monitoring and threat detection" },
+    { "id": "network", "name": "Vulnerability and network security" },
+    { "id": "systems", "name": "Identity and systems security" }
+  ],
+  "items": [
+    {
+      "group": "audit",
+      "title": "IT audit: OpenMRS EMR on AWS",
+      "tags": ["ISO/IEC 27001", "NIST SP 800-53", "HIPAA", "COBIT 2019"],
+      "summary": "Internal audit of a hospital's EMR on AWS EC2 and RDS: access control, encryption, monitoring and recovery tested against ISO/IEC 27001, NIST SP 800-53 and the HIPAA Security Rule, with risk-rated findings and a corrective action plan.",
+      "docs": 1,
+      "related": "it-risk-assessment-openmrs",
+      "evidence": ""
+    },
+    {
+      "group": "audit",
+      "title": "Hashing, data integrity and encryption",
+      "tags": ["Hashing", "Encryption", "Web security"],
+      "summary": "Verifying data integrity with cryptographic hashes and applying encryption and website security controls.",
+      "docs": 2,
+      "evidence": ""
+    },
+    {
+      "group": "monitoring",
+      "title": "Microsoft Sentinel SIEM: setup and log ingestion",
+      "tags": ["Microsoft Sentinel", "Azure Arc", "KQL"],
+      "summary": "Deployed Sentinel on a Log Analytics workspace, onboarded an on-premises machine through Azure Arc, built data collection rules for Windows security events and analysed the logs with KQL.",
+      "docs": 1,
+      "evidence": ""
+    },
+    {
+      "group": "monitoring",
+      "title": "Threat intelligence and threat hunting in Microsoft Sentinel",
+      "tags": ["Microsoft Sentinel", "Threat hunting"],
+      "summary": "Gathering threat intelligence and hunting for malicious activity across ingested security logs.",
+      "docs": 1,
+      "evidence": ""
+    },
+    {
+      "group": "monitoring",
+      "title": "Wazuh SIEM: configuring and monitoring security events",
+      "tags": ["Wazuh", "SIEM"],
+      "summary": "Configuring the open-source Wazuh SIEM and monitoring the security events it collects.",
+      "docs": 1,
+      "evidence": ""
+    },
+    {
+      "group": "monitoring",
+      "title": "Honeypot and canary token monitoring",
+      "tags": ["Honeypot", "Canary tokens", "Deception"],
+      "summary": "Deploying deception controls and monitoring the alerts they raise to detect intruders early.",
+      "docs": 1,
+      "evidence": ""
+    },
+    {
+      "group": "monitoring",
+      "title": "Phishing email analysis",
+      "tags": ["Incident triage", "Phishing"],
+      "summary": "Triage of suspicious emails to identify phishing indicators and decide on a response.",
+      "docs": 1,
+      "evidence": ""
+    },
+    {
+      "group": "network",
+      "title": "Vulnerability scanning with Nessus",
+      "tags": ["Nessus", "Vulnerability management"],
+      "summary": "Running authenticated vulnerability scans and reviewing the findings by severity.",
+      "docs": 1,
+      "evidence": ""
+    },
+    {
+      "group": "network",
+      "title": "Network scanning with Nmap on Kali Linux",
+      "tags": ["Kali Linux", "Nmap"],
+      "summary": "Building a Kali virtual machine and mapping hosts, open ports and services with Nmap.",
+      "docs": 1,
+      "evidence": ""
+    },
+    {
+      "group": "network",
+      "title": "Network traffic capture and analysis",
+      "tags": ["Wireshark", "tcpdump"],
+      "summary": "Capturing traffic with Wireshark and tcpdump, then detecting and analysing suspicious network activity.",
+      "docs": 2,
+      "evidence": ""
+    },
+    {
+      "group": "network",
+      "title": "Cisco network security labs: VLANs, ACLs and port security",
+      "tags": ["Cisco", "Packet Tracer"],
+      "summary": "Network simulation in Cisco Packet Tracer: VLAN segmentation, access control lists and switch port security.",
+      "docs": 4,
+      "evidence": ""
+    },
+    {
+      "group": "systems",
+      "title": "Active Directory and Group Policy security",
+      "tags": ["Active Directory", "Group Policy"],
+      "summary": "Implementing Active Directory and enforcing security baselines through Group Policy.",
+      "docs": 1,
+      "evidence": ""
+    },
+    {
+      "group": "systems",
+      "title": "Linux administration and security labs",
+      "tags": ["Linux", "Virtualisation"],
+      "summary": "File, user, permission, process and network management on Linux, plus a multi-OS virtual lab.",
+      "docs": 4,
+      "evidence": ""
+    }
+  ]
+}

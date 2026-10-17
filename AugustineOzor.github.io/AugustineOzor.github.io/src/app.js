@@ -4,13 +4,27 @@
   // ---- Theme toggle ----
   const toggle = document.getElementById("theme-toggle");
   const isDark = () => root.dataset.theme ? root.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
-  const syncToggle = () => toggle.setAttribute("aria-label", isDark() ? "Switch to light theme" : "Switch to dark theme");
+  const syncToggle = () => { toggle.setAttribute("aria-label", isDark() ? "Switch to light mode" : "Switch to dark mode"); toggle.title = isDark() ? "Light mode" : "Dark mode"; };
   toggle.addEventListener("click", () => {
     root.dataset.theme = isDark() ? "light" : "dark";
     try { localStorage.setItem("theme", root.dataset.theme); } catch (e) {}
     syncToggle();
   });
   syncToggle();
+
+  // ---- Colour palette ----
+  const swatches = [...document.querySelectorAll("[data-palette-set]")];
+  const syncPalette = () => {
+    const current = root.dataset.palette || "teal";
+    swatches.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.paletteSet === current)));
+  };
+  swatches.forEach((b) => b.addEventListener("click", () => {
+    const p = b.dataset.paletteSet;
+    if (p === "teal") delete root.dataset.palette; else root.dataset.palette = p;
+    try { localStorage.setItem("palette", p); } catch (e) {}
+    syncPalette();
+  }));
+  syncPalette();
 
   // ---- Register filters ----
   const q = document.getElementById("f-q");
@@ -40,8 +54,8 @@
     clearBtn.hidden = !filtered;
     empty.hidden = shown > 0;
     count.textContent = filtered
-      ? `Showing ${shown} of ${total} case studies`
-      : `Showing all ${total} case studies`;
+      ? `Showing ${shown} of ${total} projects`
+      : `Showing all ${total} projects`;
     for (const b of ledgerButtons) b.setAttribute("aria-pressed", String(b.dataset.filterFw === fw));
   }
 
@@ -130,8 +144,8 @@
     const i = order.findIndex((c) => c.slug === slug);
     const prev = order[i - 1], next = order[i + 1];
     pager.innerHTML =
-      (prev ? `<a class="prev" href="#read/${prev.slug}"><span>Previous case study</span><strong></strong></a>` : "") +
-      (next ? `<a class="next" href="#read/${next.slug}"><span>Next case study</span><strong></strong></a>` : "");
+      (prev ? `<a class="prev" href="#read/${prev.slug}"><span>Previous project</span><strong></strong></a>` : "") +
+      (next ? `<a class="next" href="#read/${next.slug}"><span>Next project</span><strong></strong></a>` : "");
     if (prev) pager.querySelector(".prev strong").textContent = prev.title;
     if (next) pager.querySelector(".next strong").textContent = next.title;
   }
@@ -145,12 +159,12 @@
     if (current !== slug) {
       let html;
       try { html = await load(slug); }
-      catch { html = `<p class="doc-note">This case study could not be loaded. <a href="#work">Return to the case studies</a>.</p>`; }
+      catch { html = `<p class="doc-note">This project could not be loaded. <a href="#work">Return to the projects</a>.</p>`; }
       body.innerHTML = html;
       current = slug;
       renderPager(slug);
       const h1 = body.querySelector("h1");
-      document.title = `${h1 ? h1.textContent : "Case study"} | ${homeTitle.split(" | ")[0]}`;
+      document.title = `${h1 ? h1.textContent : "Project"} | ${homeTitle.split(" | ")[0]}`;
       reader.hidden = false;
       document.body.classList.add("is-reading");
       renderDiagrams();
@@ -191,4 +205,28 @@
   });
   window.addEventListener("hashchange", route);
   route();
+})();
+
+// ---- Header: compact on scroll, highlight current section ----
+(() => {
+  const body = document.body;
+  let ticking = false;
+  const update = () => {
+    body.classList.toggle("header-compact", window.scrollY > 40);
+    ticking = false;
+  };
+  window.addEventListener("scroll", () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+  update();
+
+  const links = Object.fromEntries([...document.querySelectorAll("[data-nav]")].map((a) => [a.dataset.nav, a]));
+  const sectionToNav = { focus: "work", work: "work", register: "work", cloud: "cloud", labs: "labs", about: "about", architecture: "about", contact: "contact" };
+  const visible = new Map();
+  const io = new IntersectionObserver((entries) => {
+    for (const e of entries) visible.set(e.target.id, e.isIntersecting ? e.intersectionRatio : 0);
+    let best = null, bestRatio = 0;
+    for (const [id, r] of visible) if (r > bestRatio) { best = id; bestRatio = r; }
+    const key = best && sectionToNav[best];
+    for (const [k, a] of Object.entries(links)) a.setAttribute("aria-current", String(k === key));
+  }, { rootMargin: "-30% 0px -55% 0px", threshold: [0, 0.01, 0.25, 0.5, 1] });
+  Object.keys(sectionToNav).forEach((id) => { const el = document.getElementById(id); if (el) io.observe(el); });
 })();

@@ -21,7 +21,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap">
-  <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+  <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t;var p=localStorage.getItem("palette");if(p)document.documentElement.dataset.palette=p}catch(e){}</script>
   <script type="application/ld+json">{{JSONLD}}</script>
   <style>
 {{CSS}}
@@ -38,46 +38,68 @@
       </a>
       <nav aria-label="Primary">
         <ul>
-          <li><a href="#work">Work</a></li>
-          <li><a href="#register">All projects</a></li>
-          <li><a href="#about">About</a></li>
-          <li><a href="#contact">Contact</a></li>
+          <li><a href="#work" data-nav="work"><span class="nl">Projects/Case Studies</span><span class="ns">Work</span></a></li>
+          <li><a href="#cloud" data-nav="cloud">Cloud</a></li>
+          <li><a href="#labs" data-nav="labs"><span class="nl">Security labs</span><span class="ns">Labs</span></a></li>
+          <li><a href="#about" data-nav="about">About</a></li>
+          <li><a href="#contact" class="nav-cta" data-nav="contact"><span class="nl">Get in touch</span><span class="ns">Contact</span></a></li>
         </ul>
       </nav>
-      <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Switch to dark theme">
-        <svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M12 3a9 9 0 1 0 9 9c0-.5 0-.9-.1-1.3A6 6 0 0 1 12.3 3.1L12 3Z"/></svg>
-      </button>
+      <div class="theme-controls">
+        <div class="palette-switch" role="group" aria-label="Colour theme">
+          <button type="button" class="swatch swatch-teal" data-palette-set="teal" aria-pressed="true" title="Teal theme"><span class="sr-only">Teal theme</span></button>
+          <button type="button" class="swatch swatch-oxblood" data-palette-set="oxblood" aria-pressed="false" title="Oxblood theme"><span class="sr-only">Oxblood theme</span></button>
+        </div>
+        <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Switch to dark mode" title="Dark mode">
+          <svg class="icon-moon" aria-hidden="true" viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M12 3a9 9 0 1 0 9 9c0-.5 0-.9-.1-1.3A6 6 0 0 1 12.3 3.1L12 3Z"/></svg>
+          <svg class="icon-sun" aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>
+        </button>
+      </div>
     </div>
   </header>
 
   <main id="main">
-    <section id="reader" class="reader wrap" aria-label="Case study" hidden>
+    <section id="reader" class="reader wrap" aria-label="Project" hidden>
       <div class="reader-bar">
-        <button type="button" class="back-button" id="reader-back">Back to case studies</button>
+        <button type="button" class="back-button" id="reader-back">Back to projects</button>
       </div>
       <div id="reader-body"></div>
-      <nav class="reader-pager" id="reader-pager" aria-label="More case studies"></nav>
+      <nav class="reader-pager" id="reader-pager" aria-label="More projects"></nav>
     </section>
 
     <section class="hero wrap" id="top" aria-labelledby="hero-title">
       <div class="hero-text">
-        <p class="hero-id">Based in {{LOCATION}}</p>
+        <svg class="hero-emblem" viewBox="0 0 420 104" role="img" aria-label="AI governance lifecycle: Govern, Map, Measure and Manage, running as a continuous loop">
+          <path class="he-loop" d="M384 30 Q210 -8 36 30" />
+          <path class="he-arrow" d="M43 21 L36 30 L47 32" />
+          <line class="he-track" x1="36" y1="48" x2="384" y2="48" />
+          <line class="he-progress" x1="36" y1="48" x2="384" y2="48" />
+          <g class="he-node" style="--i:0"><circle class="he-ring" cx="36" cy="48" r="13" /><circle class="he-core" cx="36" cy="48" r="5" /><text x="36" y="88" text-anchor="middle">Govern</text></g>
+          <g class="he-node" style="--i:1"><circle class="he-ring" cx="152" cy="48" r="13" /><circle class="he-core" cx="152" cy="48" r="5" /><text x="152" y="88" text-anchor="middle">Map</text></g>
+          <g class="he-node" style="--i:2"><circle class="he-ring" cx="268" cy="48" r="13" /><circle class="he-core" cx="268" cy="48" r="5" /><text x="268" y="88" text-anchor="middle">Measure</text></g>
+          <g class="he-node" style="--i:3"><circle class="he-ring" cx="384" cy="48" r="13" /><circle class="he-core" cx="384" cy="48" r="5" /><text x="384" y="88" text-anchor="middle">Manage</text></g>
+          <circle class="he-dot" cx="0" cy="48" r="4.5" />
+        </svg>
+        <p class="hero-emblem-caption">AI governance lifecycle, aligned to NIST AI RMF</p>
         <h1 id="hero-title">{{HEADLINE}}</h1>
         <p class="hero-summary">{{SUMMARY}}</p>
         <ul class="actions">
-          <li><a class="button button-primary" href="#work">View case studies</a></li>
+          <li><a class="button button-primary" href="#work">View projects</a></li>
           <li><a class="button" href="{{CONTACT_PRIMARY}}">Contact me</a></li>
           <li><a class="link" href="{{LINKEDIN}}">LinkedIn</a></li>
           <li><a class="link" href="{{GITHUB}}">GitHub</a></li>
         </ul>
       </div>
 
+      <div class="hero-side">
+      <img class="portrait" src="{{PORTRAIT}}" alt="Portrait of {{NAME}}" width="240" height="240">
       <aside class="ledger" aria-labelledby="ledger-title">
         <h2 id="ledger-title">Framework coverage</h2>
-        <p class="ledger-intro">{{PROJECT_COUNT}} case studies mapped across {{FRAMEWORK_COUNT}} frameworks and regulations. Select one to see the work.</p>
+        <p class="ledger-intro">{{PROJECT_COUNT}} projects mapped across {{FRAMEWORK_COUNT}} frameworks and regulations. Select one to see the work.</p>
         <ul class="ledger-list">{{LEDGER}}
         </ul>
       </aside>
+      </div>
     </section>
 
     <section class="section wrap" id="focus" aria-labelledby="focus-title">
@@ -88,7 +110,7 @@
 
     <section class="section wrap" id="work" aria-labelledby="work-title">
       <div class="section-head">
-        <h2 id="work-title">Selected case studies</h2>
+        <h2 id="work-title">Selected projects</h2>
         <p>Each one is a complete engagement write-up on GitHub: the problem, the method, and the artefacts a reviewer or auditor would expect to see.</p>
       </div>
       <div class="cases">{{FEATURED}}
@@ -97,11 +119,11 @@
 
     <section class="section wrap" id="register" aria-labelledby="register-title">
       <div class="section-head">
-        <h2 id="register-title">Case study register</h2>
+        <h2 id="register-title">Project register</h2>
         <p>Every public project in the portfolio.</p>
       </div>
 
-      <div class="filters" role="search" aria-label="Filter case studies">
+      <div class="filters" role="search" aria-label="Filter projects">
         <div class="field field-search">
           <label for="f-q">Search</label>
           <input id="f-q" type="search" placeholder="Try “DPIA” or “credit scoring”" autocomplete="off">
@@ -116,19 +138,39 @@
         </div>
         <button type="button" class="text-button" id="f-clear" hidden>Clear filters</button>
       </div>
-      <p class="result-count" id="result-count" aria-live="polite">Showing all {{PROJECT_COUNT}} case studies</p>
+      <p class="result-count" id="result-count" aria-live="polite">Showing all {{PROJECT_COUNT}} projects</p>
 
       <div class="table-wrap">
         <table class="register">
-          <caption class="sr-only">Case study register</caption>
+          <caption class="sr-only">Project register</caption>
           <thead>
-            <tr><th scope="col">Case study</th><th scope="col">Area</th><th scope="col">Frameworks</th></tr>
+            <tr><th scope="col">Project</th><th scope="col">Area</th><th scope="col">Frameworks</th></tr>
           </thead>
           <tbody id="register-body">{{ROWS}}
           </tbody>
         </table>
-        <p class="empty" id="empty" hidden>No case studies match these filters. <button type="button" class="text-button" data-clear>Clear filters</button></p>
+        <p class="empty" id="empty" hidden>No projects match these filters. <button type="button" class="text-button" data-clear>Clear filters</button></p>
       </div>
+    </section>
+
+    <section class="section wrap" id="cloud" aria-labelledby="cloud-title">
+      <div class="section-head">
+        <h2 id="cloud-title">Cloud engineering projects</h2>
+        <p>{{CLOUD_INTRO}}</p>
+      </div>
+      <div class="cloud">{{CLOUD}}
+      </div>
+      <p class="cloud-more"><a href="{{MEDIUM}}" rel="noopener">All {{CLOUD_COUNT}} write-ups on Medium</a></p>
+    </section>
+
+    <section class="section wrap" id="labs" aria-labelledby="labs-title">
+      <div class="section-head">
+        <h2 id="labs-title">Hands-on security labs</h2>
+        <p>{{LABS_INTRO}}</p>
+      </div>
+      <div class="cloud">{{LABS}}
+      </div>
+      <p class="cloud-more">{{LABS_NOTE}}</p>
     </section>
 
     <section class="section wrap about" id="about" aria-labelledby="about-title">
@@ -162,20 +204,20 @@
     <section class="section wrap" id="architecture" aria-labelledby="arch-title">
       <div class="section-head">
         <h2 id="arch-title">How I structure AI governance</h2>
-        <p>The operating model behind my case studies: governance sets direction, every AI system moves through a controlled lifecycle, and assurance proves the controls work.</p>
+        <p>The operating model behind my projects: governance sets direction, every AI system moves through a controlled lifecycle, and assurance proves the controls work.</p>
       </div>{{ARCHITECTURE}}
     </section>
 
     <section class="section wrap contact" id="contact" aria-labelledby="contact-title">
-      <h2 id="contact-title">Open to AI governance and GRC roles, consulting and collaboration.</h2>
-      <p>Based in {{LOCATION}} and working with teams remotely.</p>
+      <h2 id="contact-title">Open to AI governance, GRC, IT audit, information security specialist and cloud security roles, as well as consulting and collaboration.</h2>
+      <p>Working with teams remotely and on site.</p>
       <ul class="contact-links">{{CONTACT_LINKS}}</ul>
     </section>
   </main>
 
   <footer class="site-footer">
     <div class="wrap">
-      <p>© {{YEAR}} {{NAME}}. Case studies use fictional organisations and synthetic data, and are not legal advice or formal conformity assessments.</p>
+      <p>© {{YEAR}} {{NAME}}. Projects use fictional organisations and synthetic data, and are not legal advice or formal conformity assessments.</p>
       <p>Updated {{BUILT}}.</p>
     </div>
   </footer>
