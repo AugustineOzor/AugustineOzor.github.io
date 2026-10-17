@@ -382,6 +382,43 @@ const archHTML = `
         <figcaption id="arch-caption">AI governance operating model. Stages are grouped by the NIST AI RMF functions: Govern, Map, Measure and Manage.</figcaption>
       </figure>`;
 
+// ---------- Control crosswalk ----------
+let crosswalkHTML = "";
+try {
+  const cw = await readJSON("data/crosswalk.json");
+  crosswalkHTML = `
+      <figure class="xw" aria-labelledby="xw-title">
+        <div class="xw-head">
+          <p class="xw-eyebrow">Control crosswalk</p>
+          <h3 id="xw-title">${esc(cw.title)}</h3>
+          <p>${esc(cw.intro)}</p>
+        </div>
+        <div class="xw-scroll">
+          <table class="xw-table">
+            <thead><tr>
+              <th scope="col" class="xw-c-eu"><span class="xw-dot"></span>EU AI Act</th>
+              <th scope="col" class="xw-c-ctl">Control</th>
+              <th scope="col" class="xw-c-iso"><span class="xw-dot"></span>ISO/IEC 42001</th>
+              <th scope="col" class="xw-c-nist"><span class="xw-dot"></span>NIST AI RMF</th>
+            </tr></thead>
+            <tbody>${cw.rows
+              .map(
+                (r, i) => `
+              <tr style="--i:${i};--n:${cw.rows.length}">
+                <td class="xw-c-eu" data-label="EU AI Act"><span class="xw-pill">${esc(r.eu)}</span></td>
+                <th scope="row" class="xw-c-ctl"><span class="xw-ctl">${esc(r.control)}</span><span class="xw-detail">${esc(r.detail)}</span></th>
+                <td class="xw-c-iso" data-label="ISO/IEC 42001"><span class="xw-pill">${esc(r.iso)}</span></td>
+                <td class="xw-c-nist" data-label="NIST AI RMF"><span class="xw-pill">${esc(r.nist)}</span></td>
+              </tr>`
+              )
+              .join("")}
+            </tbody>
+          </table>
+        </div>
+        <figcaption><strong>${esc(cw.footer)}</strong> <span>${esc(cw.note)}</span></figcaption>
+      </figure>`;
+} catch {}
+
 // ---------- Skills map ----------
 function skillsMapSVG(domains) {
   const W = 460, H = 432, cx = 230, cy = 216;
@@ -497,6 +534,7 @@ const tokens = {
   CASE_ORDER: caseOrder,
   SKILLS_MAP: skillsMap,
   GLANCE: glanceHTML,
+  CROSSWALK: crosswalkHTML,
   QUOTE: site.quote
     ? `<figure class="hero-quote"><blockquote><p>${esc(site.quote.text)}</p></blockquote><figcaption>${esc(site.quote.author)}</figcaption></figure>`
     : "",

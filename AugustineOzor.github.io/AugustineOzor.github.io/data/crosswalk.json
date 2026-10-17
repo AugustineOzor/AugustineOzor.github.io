@@ -1,0 +1,18 @@
+{
+  "title": "One control set, three frameworks",
+  "intro": "How I build AI governance programmes: design each control once, then map it to every framework it satisfies, so one piece of evidence serves several audits.",
+  "rows": [
+    { "control": "Risk management system", "detail": "Identify, rate and treat AI risks across the lifecycle", "eu": "Art. 9", "iso": "Cl. 6.1, 8.2", "nist": "Map · Measure · Manage" },
+    { "control": "Data governance", "detail": "Quality, provenance and bias checks on training data", "eu": "Art. 10", "iso": "Annex A.7", "nist": "Map" },
+    { "control": "Technical documentation", "detail": "System design, purpose and limitations on record", "eu": "Art. 11", "iso": "Cl. 7.5", "nist": "Govern" },
+    { "control": "Event logging", "detail": "Automatic, traceable logs of system behaviour", "eu": "Art. 12", "iso": "Annex A.6.2.8", "nist": "Manage" },
+    { "control": "Transparency to users", "detail": "Clear instructions, capabilities and limits", "eu": "Art. 13", "iso": "Annex A.8", "nist": "Govern" },
+    { "control": "Human oversight", "detail": "Named people who can monitor, override and stop", "eu": "Art. 14", "iso": "Annex A.9", "nist": "Govern · Manage" },
+    { "control": "Accuracy, robustness and security", "detail": "Testing, red-teaming and resilience to attack", "eu": "Art. 15", "iso": "Annex A.6.2.4", "nist": "Measure" },
+    { "control": "Impact assessment", "detail": "Effects on people and fundamental rights", "eu": "Art. 27", "iso": "Cl. 8.4", "nist": "Map" },
+    { "control": "Post-market monitoring", "detail": "Track performance and drift in production", "eu": "Art. 72", "iso": "Cl. 9.1", "nist": "Manage" },
+    { "control": "Incident reporting and correction", "detail": "Report serious incidents, fix root causes", "eu": "Art. 73", "iso": "Cl. 10.2", "nist": "Manage" }
+  ],
+  "footer": "Build each control once. Map it everywhere.",
+  "note": "Indicative mapping for illustration; always confirm against the official texts."
+}
