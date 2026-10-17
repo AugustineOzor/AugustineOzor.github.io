@@ -98,5 +98,64 @@
     "ISC2",
     "Internet Society",
     "GRC Engineering Club"
+  ],
+  "skillsMap": [
+    {
+      "title": "AI governance",
+      "items": [
+        "EU AI Act",
+        "ISO/IEC 42001",
+        "NIST AI RMF"
+      ]
+    },
+    {
+      "title": "GRC and IT audit",
+      "items": [
+        "ISO/IEC 27001",
+        "SOC 2",
+        "ITGC testing"
+      ]
+    },
+    {
+      "title": "Data protection",
+      "items": [
+        "GDPR",
+        "DPIAs",
+        "Records of processing"
+      ]
+    },
+    {
+      "title": "Security operations",
+      "items": [
+        "Microsoft Sentinel",
+        "Wazuh",
+        "Nessus"
+      ]
+    },
+    {
+      "title": "Cloud security",
+      "items": [
+        "AWS and Azure",
+        "IAM",
+        "Encryption (KMS)"
+      ]
+    }
+  ],
+  "toolkit": [
+    "AWS",
+    "Microsoft Azure",
+    "Microsoft Sentinel",
+    "KQL",
+    "Wazuh",
+    "Nessus",
+    "Nmap",
+    "Wireshark",
+    "Kali Linux",
+    "Active Directory",
+    "AWS CloudFormation",
+    "AWS KMS",
+    "Azure Arc",
+    "Cisco Packet Tracer",
+    "AWS Inspector"
   ]
 }

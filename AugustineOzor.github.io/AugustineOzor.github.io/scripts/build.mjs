@@ -382,6 +382,49 @@ const archHTML = `
         <figcaption id="arch-caption">AI governance operating model. Stages are grouped by the NIST AI RMF functions: Govern, Map, Measure and Manage.</figcaption>
       </figure>`;
 
+// ---------- Skills map ----------
+function skillsMapSVG(domains) {
+  const W = 460, H = 432, cx = 230, cy = 216;
+  const pos = [[230, 50], [375, 172], [318, 374], [142, 374], [85, 172]];
+  const cw = 160, lineH = 19;
+  let links = "", cards = "";
+  domains.slice(0, 5).forEach((d, i) => {
+    const [x, y] = pos[i];
+    const ch = 34 + d.items.length * lineH;
+    links += `<line class="sm-link" x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" style="--i:${i}"/>`;
+    cards += `<g class="sm-card" style="--i:${i}">
+      <rect x="${x - cw / 2}" y="${y - ch / 2}" width="${cw}" height="${ch}" rx="10"/>
+      <text class="sm-title" x="${x}" y="${y - ch / 2 + 23}" text-anchor="middle">${esc(d.title)}</text>
+      ${d.items.map((it, k) => `<text class="sm-item" x="${x}" y="${y - ch / 2 + 44 + k * lineH}" text-anchor="middle">${esc(it)}</text>`).join("")}
+    </g>`;
+  });
+  const label = `Skills map: ${domains.map((d) => `${d.title} (${d.items.join(", ")})`).join("; ")}.`;
+  return `<figure class="skills-map">
+        <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(label)}">
+          ${links}
+          <circle class="sm-pulse" cx="${cx}" cy="${cy}" r="54"/>
+          <circle class="sm-hub" cx="${cx}" cy="${cy}" r="54"/>
+          <text class="sm-hub-text" x="${cx}" y="${cy - 4}" text-anchor="middle">AI governance</text>
+          <text class="sm-hub-text" x="${cx}" y="${cy + 14}" text-anchor="middle">and GRC</text>
+          ${cards}
+        </svg>
+      </figure>`;
+}
+const skillsMap = site.skillsMap ? skillsMapSVG(site.skillsMap) : "";
+const glanceItems = [
+  [projects.length, "governance and GRC projects", "#register"],
+  [frameworks.length, "frameworks and regulations mapped", "#top"],
+  [cloudPosts.length, "AWS cloud builds", "#cloud"],
+  [sec.items.length, "hands-on security labs", "#labs"],
+  [site.certifications.held.length, "certifications held", "#about"],
+];
+const glanceHTML = `
+        <h3>At a glance</h3>
+        <ul class="glance">${glanceItems
+          .map(([n, label, href]) => `<li><a href="${href}"><strong>${n}</strong><span>${esc(label)}</span></a></li>`)
+          .join("")}</ul>
+        ${site.toolkit?.length ? `<h3>Toolkit</h3><ul class="toolkit">${site.toolkit.map((t) => `<li>${esc(t)}</li>`).join("")}</ul>` : ""}`;
+
 const themeOptions = themes.filter((t) => projects.some((x) => x.theme === t.id)).map((t) => `<option value="${t.id}">${esc(t.name)}</option>`).join("");
 const fwOptions = frameworks.map(([f]) => `<option value="${esc(f)}">${esc(f)}</option>`).join("");
 
@@ -452,6 +495,8 @@ const tokens = {
   MEMBERSHIPS: esc(site.memberships.join(", ")),
   CONTACT_LINKS: contactLinks,
   CASE_ORDER: caseOrder,
+  SKILLS_MAP: skillsMap,
+  GLANCE: glanceHTML,
   ARCHITECTURE: archHTML,
   CLOUD: cloudHTML,
   LABS: labsHTML,
