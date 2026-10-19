@@ -1,0 +1,10 @@
+{
+  "intro": "Short, practical explainers on AI governance, AI security, risk management and the EU AI Act, written for practitioners and decision-makers.",
+  "initial": 9,
+  "categories": [
+    { "id": "ai-governance", "name": "AI governance" },
+    { "id": "eu-ai-act", "name": "EU AI Act" },
+    { "id": "ai-risk", "name": "AI risk management" },
+    { "id": "ai-security", "name": "AI security" }
+  ]
+}

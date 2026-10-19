@@ -1,3 +1,56 @@
+// ---- Page views: each section group behaves as its own page (#/projects, #/cloud, ...) ----
+window.__views = (() => {
+  const VIEWS = ["home", "projects", "cloud", "labs", "articles", "about"];
+  const ANCHOR_VIEW = { top: "home", focus: "home", architecture: "home", work: "projects", register: "projects", "projects-title": "projects", cloud: "cloud", labs: "labs", articles: "articles", about: "about", "about-title": "about" };
+  const name = document.title.split(" | ")[0];
+  const TITLES = { home: document.title, projects: `Projects and case studies | ${name}`, cloud: `Cloud engineering | ${name}`, labs: `Security labs | ${name}`, articles: `Knowledge articles | ${name}`, about: `About | ${name}` };
+  const sections = [...document.querySelectorAll("main > [data-view]")];
+  const navLinks = [...document.querySelectorAll("[data-nav]")];
+  let current = null, pending = null, restoreY = null;
+  function show(v) {
+    current = v;
+    let first = true;
+    for (const s of sections) {
+      const vs = s.dataset.view.split(" ");
+      const on = vs.includes("all") || vs.includes(v);
+      s.hidden = !on;
+      s.classList.toggle("view-first", on && first && !vs.includes("all"));
+      if (on && !vs.includes("all")) first = false;
+    }
+    navLinks.forEach((a) => a.setAttribute("aria-current", String(a.dataset.nav === v)));
+    document.title = TITLES[v] || TITLES.home;
+  }
+  function scrollToId(id) {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView();
+    return !!el;
+  }
+  function handle() {
+    const h = location.hash;
+    let v = current || "home", anchor = null;
+    if (!h || h === "#" || h === "#/") v = "home";
+    else if (h.startsWith("#/")) { const x = h.slice(2); v = VIEWS.includes(x) ? x : "home"; }
+    else { anchor = decodeURIComponent(h.slice(1)); if (ANCHOR_VIEW[anchor]) v = ANCHOR_VIEW[anchor]; }
+    const changed = v !== current;
+    show(v);
+    if (anchor && scrollToId(anchor)) return;
+    if (pending) { const id = pending; pending = null; if (scrollToId(id)) return; }
+    if (restoreY != null) { const y = restoreY; restoreY = null; window.scrollTo(0, y); return; }
+    if (changed) window.scrollTo(0, 0);
+  }
+  return {
+    handle,
+    get current() { return current; },
+    hashFor: (v) => (v === "home" ? "#/" : `#/${v}`),
+    setRestore: (y) => { restoreY = y; },
+    go(view, anchorId) {
+      if (current === view) { if (anchorId) scrollToId(anchorId); return; }
+      pending = anchorId || null;
+      location.hash = view === "home" ? "#/" : `#/${view}`;
+    },
+  };
+})();
+
 (() => {
   const root = document.documentElement;
 
@@ -66,7 +119,7 @@
   }
 
   function goToRegister() {
-    document.getElementById("register").scrollIntoView();
+    window.__views.go("projects", "register");
     document.getElementById("register-title").setAttribute("tabindex", "-1");
     document.getElementById("register-title").focus({ preventScroll: true });
   }
@@ -141,11 +194,15 @@
   }
 
   function renderPager(slug) {
-    const i = order.findIndex((c) => c.slug === slug);
-    const prev = order[i - 1], next = order[i + 1];
+    const me = order.find((c) => c.slug === slug);
+    const list = order.filter((c) => c.group === (me ? me.group : "project"));
+    const i = list.findIndex((c) => c.slug === slug);
+    const prev = list[i - 1], next = list[i + 1];
+    const noun = me && me.group === "article" ? "article" : "project";
+    backBtn.textContent = noun === "article" ? "Back to articles" : "Back to projects";
     pager.innerHTML =
-      (prev ? `<a class="prev" href="#read/${prev.slug}"><span>Previous project</span><strong></strong></a>` : "") +
-      (next ? `<a class="next" href="#read/${next.slug}"><span>Next project</span><strong></strong></a>` : "");
+      (prev ? `<a class="prev" href="#read/${prev.slug}"><span>Previous ${noun}</span><strong></strong></a>` : "") +
+      (next ? `<a class="next" href="#read/${next.slug}"><span>Next ${noun}</span><strong></strong></a>` : "");
     if (prev) pager.querySelector(".prev strong").textContent = prev.title;
     if (next) pager.querySelector(".next strong").textContent = next.title;
   }
@@ -154,8 +211,12 @@
     body.querySelectorAll(".doc-nav a").forEach((a, i) => a.setAttribute("aria-current", String(String(i) === String(doc ?? 0))));
   }
 
+  let returnTo = null;
   async function open(slug, doc, anchor) {
-    if (!document.body.classList.contains("is-reading")) homeScroll = window.scrollY;
+    if (!document.body.classList.contains("is-reading")) {
+      homeScroll = window.scrollY;
+      returnTo = window.__views.current ? { hash: window.__views.hashFor(window.__views.current), y: homeScroll } : null;
+    }
     if (current !== slug) {
       let html;
       try { html = await load(slug); }
@@ -184,21 +245,22 @@
     reader.hidden = true;
     body.innerHTML = "";
     current = null;
-    document.title = homeTitle;
-    const target = location.hash && document.getElementById(location.hash.slice(1));
-    if (target) target.scrollIntoView();
-    else window.scrollTo(0, homeScroll);
   }
 
   function route() {
     const m = location.hash.match(/^#read\/([a-z0-9-]+)(?:\/(\d+))?(?:\/(.+))?$/);
-    if (m) open(m[1], m[2], m[3]);
-    else close();
+    if (m) { open(m[1], m[2], m[3]); return; }
+    close();
+    window.__views.handle();
   }
 
   backBtn.addEventListener("click", () => {
-    location.hash = "";
-    history.replaceState(null, "", location.pathname + location.search);
+    const me = order.find((c) => c.slug === current);
+    const fallback = me && me.group === "article" ? "#/articles" : "#/projects";
+    const r = returnTo || { hash: fallback, y: 0 };
+    returnTo = null;
+    window.__views.setRestore(r.y);
+    location.hash = r.hash;
   });
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && document.body.classList.contains("is-reading")) backBtn.click();
@@ -207,7 +269,7 @@
   route();
 })();
 
-// ---- Header: compact on scroll, highlight current section ----
+// ---- Header: compact on scroll ----
 (() => {
   const body = document.body;
   let ticking = false;
@@ -218,15 +280,27 @@
   window.addEventListener("scroll", () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
   update();
 
-  const links = Object.fromEntries([...document.querySelectorAll("[data-nav]")].map((a) => [a.dataset.nav, a]));
-  const sectionToNav = { focus: "work", work: "work", register: "work", cloud: "cloud", labs: "labs", about: "about", architecture: "about", contact: "contact" };
-  const visible = new Map();
-  const io = new IntersectionObserver((entries) => {
-    for (const e of entries) visible.set(e.target.id, e.isIntersecting ? e.intersectionRatio : 0);
-    let best = null, bestRatio = 0;
-    for (const [id, r] of visible) if (r > bestRatio) { best = id; bestRatio = r; }
-    const key = best && sectionToNav[best];
-    for (const [k, a] of Object.entries(links)) a.setAttribute("aria-current", String(k === key));
-  }, { rootMargin: "-30% 0px -55% 0px", threshold: [0, 0.01, 0.25, 0.5, 1] });
-  Object.keys(sectionToNav).forEach((id) => { const el = document.getElementById(id); if (el) io.observe(el); });
+})();
+
+// ---- Knowledge articles: topic filter and "show all" ----
+(() => {
+  const grid = document.getElementById("art-grid");
+  if (!grid) return;
+  const cards = [...grid.querySelectorAll(".art-card")];
+  const chips = [...document.querySelectorAll("[data-art-cat]")];
+  const more = document.getElementById("art-more");
+  const initial = +grid.dataset.initial || 9;
+  let cat = "", expanded = false;
+  function apply() {
+    const matching = cards.filter((c) => !cat || c.dataset.cat === cat);
+    cards.forEach((c) => (c.hidden = true));
+    matching.forEach((c, i) => (c.hidden = !expanded && i >= initial));
+    const hiddenCount = matching.length - (expanded ? matching.length : Math.min(initial, matching.length));
+    more.parentElement.hidden = hiddenCount <= 0;
+    more.textContent = `Show all ${matching.length} articles`;
+    chips.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.artCat === cat)));
+  }
+  chips.forEach((b) => b.addEventListener("click", () => { cat = b.dataset.artCat; expanded = false; apply(); }));
+  more.addEventListener("click", () => { expanded = true; apply(); });
+  apply();
 })();

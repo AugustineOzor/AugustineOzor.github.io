@@ -18,6 +18,7 @@
   <meta name="theme-color" content="#F4F6F3" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#10161C" media="(prefers-color-scheme: dark)">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap">
@@ -32,16 +33,17 @@
 
   <header class="site-header">
     <div class="wrap header-inner">
-      <a class="brand" href="#top">
-        <img class="avatar" src="{{AVATAR}}" alt="Portrait of {{NAME}}" width="100" height="100">
+      <a class="brand" href="#/">
+        <svg class="logo" viewBox="0 0 64 64" role="img" aria-label="{{NAME}} logo"><path class="logo-shield" d="M32 3 L57 11.5 V30 C57 45.5 46.5 55.5 32 61 C17.5 55.5 7 45.5 7 30 V11.5 Z"/><path class="logo-a" d="M20.5 47 L32 18 L43.5 47"/><circle class="logo-o" cx="32" cy="37" r="5.2"/></svg>
         <span class="brand-text"><span class="brand-name">{{NAME}}</span><span class="brand-role">{{ROLE}}</span></span>
       </a>
       <nav aria-label="Primary">
         <ul>
-          <li><a href="#work" data-nav="work"><span class="nl">Projects/Case Studies</span><span class="ns">Work</span></a></li>
-          <li><a href="#cloud" data-nav="cloud">Cloud</a></li>
-          <li><a href="#labs" data-nav="labs"><span class="nl">Security labs</span><span class="ns">Labs</span></a></li>
-          <li><a href="#about" data-nav="about">About</a></li>
+          <li><a href="#/projects" data-nav="projects"><span class="nl">Projects/Case Studies</span><span class="ns">Work</span></a></li>
+          <li><a href="#/cloud" data-nav="cloud">Cloud</a></li>
+          <li><a href="#/labs" data-nav="labs"><span class="nl">Security labs</span><span class="ns">Labs</span></a></li>
+          <li><a href="#/articles" data-nav="articles">Articles</a></li>
+          <li><a href="#/about" data-nav="about">About</a></li>
           <li><a href="#contact" class="nav-cta" data-nav="contact"><span class="nl">Get in touch</span><span class="ns">Contact</span></a></li>
         </ul>
       </nav>
@@ -67,7 +69,7 @@
       <nav class="reader-pager" id="reader-pager" aria-label="More projects"></nav>
     </section>
 
-    <section class="hero wrap" id="top" aria-labelledby="hero-title">
+    <section class="hero wrap" id="top" data-view="home" aria-labelledby="hero-title">
       <div class="hero-text">
         <svg class="hero-emblem" viewBox="0 0 420 104" role="img" aria-label="AI governance lifecycle: Govern, Map, Measure and Manage, running as a continuous loop">
           <path class="he-loop" d="M384 30 Q210 -8 36 30" />
@@ -84,7 +86,7 @@
         <h1 id="hero-title">{{HEADLINE}}</h1>
         <p class="hero-summary">{{SUMMARY}}</p>
         <ul class="actions">
-          <li><a class="button button-primary" href="#work">View projects</a></li>
+          <li><a class="button button-primary" href="#/projects">View projects</a></li>
           <li><a class="button" href="{{CONTACT_PRIMARY}}">Contact me</a></li>
           <li><a class="link" href="{{LINKEDIN}}">LinkedIn</a></li>
           <li><a class="link" href="{{GITHUB}}">GitHub</a></li>
@@ -105,22 +107,26 @@
       </div>
     </section>
 
-    <section class="section wrap" id="focus" aria-labelledby="focus-title">
+    <section class="section wrap" id="focus" data-view="home" aria-labelledby="focus-title">
       <h2 id="focus-title">Focus areas</h2>
       <ul class="focus-list">{{FOCUS}}
       </ul>
     </section>
 
-    <section class="section wrap" id="work" aria-labelledby="work-title">
+    <section class="section wrap" id="work" data-view="projects" aria-labelledby="work-title">
+      <div class="page-intro">
+        <h1 class="page-title" id="projects-title">Projects and case studies</h1>
+        <p>Governance, risk and compliance engagements, each written up end to end. Start with the selected projects, or search and filter the full register below.</p>
+      </div>
       <div class="section-head">
         <h2 id="work-title">Selected projects</h2>
-        <p>Each one is a complete engagement write-up on GitHub: the problem, the method, and the artefacts a reviewer or auditor would expect to see.</p>
+        <p>Six engagements that show the range of my work. Open any one to read the full write-up.</p>
       </div>
       <div class="cases">{{FEATURED}}
       </div>
     </section>
 
-    <section class="section wrap" id="register" aria-labelledby="register-title">
+    <section class="section wrap" id="register" data-view="projects" aria-labelledby="register-title">
       <div class="section-head">
         <h2 id="register-title">Project register</h2>
         <p>Every public project in the portfolio.</p>
@@ -156,9 +162,9 @@
       </div>
     </section>
 
-    <section class="section wrap" id="cloud" aria-labelledby="cloud-title">
+    <section class="section wrap" id="cloud" data-view="cloud" aria-labelledby="cloud-title">
       <div class="section-head">
-        <h2 id="cloud-title">Cloud engineering projects</h2>
+        <h1 id="cloud-title" class="page-title">Cloud engineering projects</h1>
         <p>{{CLOUD_INTRO}}</p>
       </div>
       <div class="cloud">{{CLOUD}}
@@ -166,9 +172,9 @@
       <p class="cloud-more"><a href="{{MEDIUM}}" rel="noopener">All {{CLOUD_COUNT}} write-ups on Medium</a></p>
     </section>
 
-    <section class="section wrap" id="labs" aria-labelledby="labs-title">
+    <section class="section wrap" id="labs" data-view="labs" aria-labelledby="labs-title">
       <div class="section-head">
-        <h2 id="labs-title">Hands-on security labs</h2>
+        <h1 id="labs-title" class="page-title">Hands-on security labs</h1>
         <p>{{LABS_INTRO}}</p>
       </div>
       <div class="cloud">{{LABS}}
@@ -176,9 +182,16 @@
       <p class="cloud-more">{{LABS_NOTE}}</p>
     </section>
 
-    <section class="section wrap about" id="about" aria-labelledby="about-title">
+    <section class="section wrap" id="articles" data-view="articles" aria-labelledby="articles-title">
+      <div class="section-head">
+        <h1 id="articles-title" class="page-title">Knowledge articles</h1>
+        <p>{{ARTICLES_INTRO}}</p>
+      </div>{{ARTICLES}}
+    </section>
+
+    <section class="section wrap about" id="about" data-view="about" aria-labelledby="about-title">
       <div class="about-intro">
-        <h2 id="about-title">About</h2>
+        <h1 id="about-title" class="page-title">About</h1>
         <p class="lede">{{ABOUT}}</p>
         <h3>Core expertise</h3>
         <ul class="plain-list">{{EXPERTISE}}</ul>
@@ -201,14 +214,14 @@
       {{CROSSWALK}}
     </section>
 
-    <section class="section wrap" id="architecture" aria-labelledby="arch-title">
+    <section class="section wrap" id="architecture" data-view="home" aria-labelledby="arch-title">
       <div class="section-head">
         <h2 id="arch-title">How I structure AI governance</h2>
         <p>The operating model behind my projects: governance sets direction, every AI system moves through a controlled lifecycle, and assurance proves the controls work.</p>
       </div>{{ARCHITECTURE}}
     </section>
 
-    <section class="section wrap contact" id="contact" aria-labelledby="contact-title">
+    <section class="section wrap contact" id="contact" data-view="all" aria-labelledby="contact-title">
       <h2 id="contact-title">Open to AI governance, GRC, IT audit, information security specialist and cloud security roles, as well as consulting and collaboration.</h2>
       <p>Working with teams remotely and on site.</p>
       <ul class="contact-links">{{CONTACT_LINKS}}</ul>

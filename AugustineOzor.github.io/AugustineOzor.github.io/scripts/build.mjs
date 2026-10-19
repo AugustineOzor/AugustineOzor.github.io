@@ -12,6 +12,7 @@ import { fileURLToPath } from "node:url";
 import path from "node:path";
 import { loadContent, slugOf } from "./content.mjs";
 import { fwIcon } from "./icons.mjs";
+import { loadArticles } from "./articles.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const p = (...s) => path.join(root, ...s);
@@ -267,19 +268,12 @@ const featuredHTML = featured
             <span class="banner-area">${esc(themeName[x.theme])}</span>
             <h3 class="banner-title">${esc(x.title)}</h3>
             ${x.context ? `<span class="banner-context">${esc(x.context)}</span>` : ""}
+            ${x.problem || x.summary ? `<span class="banner-problem">${esc(x.problem || x.summary)}</span>` : ""}
             ${x.frameworks.length ? `<span class="banner-fw">Frameworks: ${esc(x.frameworks.join(", "))}</span>` : ""}
             <span class="banner-cta">Read the project</span>
           </div>
           ${matrixSVG(x.name)}
         </a>
-        <div class="case-body">
-          <dl class="case-story">
-            <dt>Problem</dt><dd>${esc(x.problem || x.summary)}</dd>
-            ${x.approach ? `<dt>Approach</dt><dd>${esc(x.approach)}</dd>` : ""}
-            ${x.demo ? `<dt>Demo</dt><dd><a href="${esc(x.demo)}">Live demo</a></dd>` : ""}
-            ${x.deliverables.length ? `<dt>Deliverables</dt><dd><ul class="deliverables">${x.deliverables.map((d) => `<li>${esc(d)}</li>`).join("")}</ul></dd>` : ""}
-          </dl>
-        </div>
       </article>`
   )
   .join("");
@@ -294,6 +288,50 @@ const rowsHTML = projects
           </tr>`
   )
   .join("");
+
+// ---------- Knowledge articles ----------
+const articles = await loadArticles(p("articles"));
+const artCfg = await readJSON("data/articles.config.json").catch(() => ({ categories: [], initial: 9, intro: "" }));
+const artCatName = Object.fromEntries(artCfg.categories.map((c) => [c.id, c.name]));
+const articlesHTML = articles.length
+  ? `
+      <div class="art-filters" role="group" aria-label="Filter articles by topic">
+        <button type="button" class="art-chip" data-art-cat="" aria-pressed="true">All <span>${articles.length}</span></button>
+        ${artCfg.categories
+          .map((c) => {
+            const n = articles.filter((a) => a.category === c.id).length;
+            return n ? `<button type="button" class="art-chip" data-art-cat="${c.id}" aria-pressed="false">${esc(c.name)} <span>${n}</span></button>` : "";
+          })
+          .join("")}
+      </div>
+      <ul class="art-grid" id="art-grid" data-initial="${artCfg.initial || 9}">${articles
+        .map(
+          (a) => `
+        <li class="art-card" data-cat="${esc(a.category)}">
+          <a href="#read/${a.slug}">
+            <span class="art-cat">${esc(artCatName[a.category] || "Article")}</span>
+            <span class="art-title">${esc(a.title)}</span>
+            <span class="art-summary">${esc(a.summary)}</span>
+            <span class="art-meta">${a.minutes} min read</span>
+          </a>
+        </li>`
+        )
+        .join("")}
+      </ul>
+      <p class="art-more"><button type="button" class="button" id="art-more">Show all articles</button></p>`
+  : "";
+function articleReaderHTML(a) {
+  return `<article class="reader-article">
+    <header class="reader-head">
+      <p class="reader-area">${esc(artCatName[a.category] || "Knowledge article")}</p>
+      <h1 tabindex="-1">${esc(a.title)}</h1>
+      <dl class="reader-meta"><div><dt>Reading time</dt><dd>${a.minutes} min</dd></div><div><dt>Author</dt><dd>${esc(site.name)}</dd></div></dl>
+    </header>
+    <div class="reader-layout"><div class="prose"><section class="doc">${a.html}</section>
+    ${a.tags?.length ? `<ul class="art-tags">${a.tags.map((t) => `<li>#${esc(t)}</li>`).join("")}</ul>` : ""}
+    </div></div>
+  </article>`;
+}
 
 function readerHTML(x) {
   const c = content[x.name];
@@ -326,8 +364,16 @@ function readerHTML(x) {
   return `<article class="reader-article">${meta}<div class="reader-layout">${toc}<div class="prose">${body}${files}</div></div></article>`;
 }
 
-const caseOrder = JSON.stringify(projects.map((x) => ({ slug: x.slug, title: x.title }))).replace(/</g, "\\u003c");
-const readerTemplates = inline ? projects.map((x) => `<template id="read-${x.slug}">${readerHTML(x)}</template>`).join("\n") : "";
+const caseOrder = JSON.stringify([
+  ...projects.map((x) => ({ slug: x.slug, title: x.title, group: "project" })),
+  ...articles.map((a) => ({ slug: a.slug, title: a.title, group: "article" })),
+]).replace(/</g, "\\u003c");
+const readerTemplates = inline
+  ? [
+      ...projects.map((x) => `<template id="read-${x.slug}">${readerHTML(x)}</template>`),
+      ...articles.map((a) => `<template id="read-${a.slug}">${articleReaderHTML(a)}</template>`),
+    ].join("\n")
+  : "";
 
 // ---------- AI governance architecture ----------
 const bySlug = Object.fromEntries(projects.map((x) => [x.slug, x]));
@@ -449,11 +495,11 @@ function skillsMapSVG(domains) {
 }
 const skillsMap = site.skillsMap ? skillsMapSVG(site.skillsMap) : "";
 const glanceItems = [
-  [projects.length, "governance and GRC projects", "#register"],
-  [frameworks.length, "frameworks and regulations mapped", "#top"],
-  [cloudPosts.length, "AWS cloud builds", "#cloud"],
-  [sec.items.length, "hands-on security labs", "#labs"],
-  [site.certifications.held.length, "certifications held", "#about"],
+  [projects.length, "governance and GRC projects", "#/projects"],
+  [frameworks.length, "frameworks and regulations mapped", "#/"],
+  [cloudPosts.length, "AWS cloud builds", "#/cloud"],
+  [sec.items.length, "hands-on security labs", "#/labs"],
+  [site.certifications.held.length, "certifications held", "#about-title"],
 ];
 const glanceHTML = `
         <h3>At a glance</h3>
@@ -535,6 +581,9 @@ const tokens = {
   SKILLS_MAP: skillsMap,
   GLANCE: glanceHTML,
   CROSSWALK: crosswalkHTML,
+  ARTICLES: articlesHTML,
+  ARTICLES_INTRO: esc(artCfg.intro || ""),
+  ARTICLE_COUNT: String(articles.length),
   QUOTE: site.quote
     ? `<figure class="hero-quote"><blockquote><p>${esc(site.quote.text)}</p></blockquote><figcaption>${esc(site.quote.author)}</figcaption></figure>`
     : "",
@@ -569,6 +618,7 @@ await writeFile(p("dist/.nojekyll"), "");
 if (!inline) {
   await mkdir(p("dist/read"), { recursive: true });
   for (const x of projects) await writeFile(p(`dist/read/${x.slug}.html`), readerHTML(x));
+  for (const a of articles) await writeFile(p(`dist/read/${a.slug}.html`), articleReaderHTML(a));
 }
 for (const f of await readdir(p("public"))) await copyFile(p("public", f), p("dist", f));
 
