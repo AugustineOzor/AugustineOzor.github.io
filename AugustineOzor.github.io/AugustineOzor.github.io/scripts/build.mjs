@@ -290,11 +290,30 @@ const rowsHTML = projects
   .join("");
 
 // ---------- Knowledge articles ----------
-const articles = await loadArticles(p("articles"));
+const allArticles = await loadArticles(p("articles"));
+const articles = allArticles.filter((a) => !a.series);
+const seriesItems = allArticles.filter((a) => a.series).sort((x, y) => (x.seriesNo || 0) - (y.seriesNo || 0));
 const artCfg = await readJSON("data/articles.config.json").catch(() => ({ categories: [], initial: 9, intro: "" }));
 const artCatName = Object.fromEntries(artCfg.categories.map((c) => [c.id, c.name]));
-const articlesHTML = articles.length
+const seriesCfg = (artCfg.series || {})["eu-ai-act"];
+const seriesHTML = seriesItems.length && seriesCfg
   ? `
+      <div class="series" id="eu-series">
+        <div class="series-head">
+          <p class="xw-eyebrow series-eyebrow">Series · ${seriesItems.length} articles</p>
+          <h2>${esc(seriesCfg.title)}</h2>
+          <p>${esc(seriesCfg.intro)}</p>
+          ${seriesCfg.source ? `<p class="series-source">Source: <a href="${esc(seriesCfg.source)}" rel="noopener">Regulation (EU) 2024/1689 on EUR-Lex</a>. ${esc(seriesCfg.sourceNote || "")}</p>` : ""}
+        </div>
+        <ol class="series-grid is-collapsed" id="series-grid">${seriesItems
+          .map((a) => `<li><a href="#read/${a.slug}"><span class="series-no">Art. ${a.seriesNo}</span><span class="series-title">${esc(a.short || a.title)}</span></a></li>`)
+          .join("")}</ol>
+        ${seriesItems.length > 12 ? `<p class="art-more"><button type="button" class="button" id="series-more" aria-controls="series-grid" aria-expanded="false">Show all ${seriesItems.length} articles in the series</button></p>` : ""}
+      </div>
+      <h2 class="art-heading">More articles</h2>`
+  : "";
+const articlesHTML = articles.length
+  ? `${seriesHTML}
       <div class="art-filters" role="group" aria-label="Filter articles by topic">
         <button type="button" class="art-chip" data-art-cat="" aria-pressed="true">All <span>${articles.length}</span></button>
         ${artCfg.categories
@@ -323,7 +342,7 @@ const articlesHTML = articles.length
 function articleReaderHTML(a) {
   return `<article class="reader-article">
     <header class="reader-head">
-      <p class="reader-area">${esc(artCatName[a.category] || "Knowledge article")}</p>
+      <p class="reader-area">${a.series ? `EU AI Act series · Article ${a.seriesNo}` : esc(artCatName[a.category] || "Knowledge article")}</p>
       <h1 tabindex="-1">${esc(a.title)}</h1>
       <dl class="reader-meta"><div><dt>Reading time</dt><dd>${a.minutes} min</dd></div><div><dt>Author</dt><dd>${esc(site.name)}</dd></div></dl>
     </header>
@@ -367,11 +386,12 @@ function readerHTML(x) {
 const caseOrder = JSON.stringify([
   ...projects.map((x) => ({ slug: x.slug, title: x.title, group: "project" })),
   ...articles.map((a) => ({ slug: a.slug, title: a.title, group: "article" })),
+  ...seriesItems.map((a) => ({ slug: a.slug, title: a.title, group: "series" })),
 ]).replace(/</g, "\\u003c");
 const readerTemplates = inline
   ? [
       ...projects.map((x) => `<template id="read-${x.slug}">${readerHTML(x)}</template>`),
-      ...articles.map((a) => `<template id="read-${a.slug}">${articleReaderHTML(a)}</template>`),
+      ...allArticles.map((a) => `<template id="read-${a.slug}">${articleReaderHTML(a)}</template>`),
     ].join("\n")
   : "";
 
@@ -583,7 +603,7 @@ const tokens = {
   CROSSWALK: crosswalkHTML,
   ARTICLES: articlesHTML,
   ARTICLES_INTRO: esc(artCfg.intro || ""),
-  ARTICLE_COUNT: String(articles.length),
+  ARTICLE_COUNT: String(allArticles.length),
   QUOTE: site.quote
     ? `<figure class="hero-quote"><blockquote><p>${esc(site.quote.text)}</p></blockquote><figcaption>${esc(site.quote.author)}</figcaption></figure>`
     : "",
@@ -618,7 +638,7 @@ await writeFile(p("dist/.nojekyll"), "");
 if (!inline) {
   await mkdir(p("dist/read"), { recursive: true });
   for (const x of projects) await writeFile(p(`dist/read/${x.slug}.html`), readerHTML(x));
-  for (const a of articles) await writeFile(p(`dist/read/${a.slug}.html`), articleReaderHTML(a));
+  for (const a of allArticles) await writeFile(p(`dist/read/${a.slug}.html`), articleReaderHTML(a));
 }
 for (const f of await readdir(p("public"))) await copyFile(p("public", f), p("dist", f));
 

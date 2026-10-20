@@ -198,7 +198,7 @@ window.__views = (() => {
     const list = order.filter((c) => c.group === (me ? me.group : "project"));
     const i = list.findIndex((c) => c.slug === slug);
     const prev = list[i - 1], next = list[i + 1];
-    const noun = me && me.group === "article" ? "article" : "project";
+    const noun = me && me.group === "series" ? "article" : me && me.group === "article" ? "article" : "project";
     backBtn.textContent = noun === "article" ? "Back to articles" : "Back to projects";
     pager.innerHTML =
       (prev ? `<a class="prev" href="#read/${prev.slug}"><span>Previous ${noun}</span><strong></strong></a>` : "") +
@@ -256,7 +256,7 @@ window.__views = (() => {
 
   backBtn.addEventListener("click", () => {
     const me = order.find((c) => c.slug === current);
-    const fallback = me && me.group === "article" ? "#/articles" : "#/projects";
+    const fallback = me && (me.group === "article" || me.group === "series") ? "#/articles" : "#/projects";
     const r = returnTo || { hash: fallback, y: 0 };
     returnTo = null;
     window.__views.setRestore(r.y);
@@ -303,4 +303,17 @@ window.__views = (() => {
   chips.forEach((b) => b.addEventListener("click", () => { cat = b.dataset.artCat; expanded = false; apply(); }));
   more.addEventListener("click", () => { expanded = true; apply(); });
   apply();
+})();
+
+// ---- EU AI Act series: expand / collapse ----
+(() => {
+  const btn = document.getElementById("series-more");
+  const grid = document.getElementById("series-grid");
+  if (!btn || !grid) return;
+  const total = grid.children.length;
+  btn.addEventListener("click", () => {
+    const open = grid.classList.toggle("is-collapsed") === false;
+    btn.setAttribute("aria-expanded", String(open));
+    btn.textContent = open ? "Show fewer" : `Show all ${total} articles in the series`;
+  });
 })();

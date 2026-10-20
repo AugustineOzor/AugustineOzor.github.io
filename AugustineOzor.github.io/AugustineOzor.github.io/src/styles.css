@@ -418,6 +418,20 @@ body.header-compact { --hh: 4rem; }
 .art-tags { list-style: none; display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 2rem; padding: 0; }
 .art-tags li { padding: 0.2rem 0.6rem; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-size: 0.82rem; font-weight: 600; }
 
+/* EU AI Act series */
+.series { margin-bottom: 3.5rem; padding: clamp(1.25rem, 3vw, 2rem); border: 1px solid var(--rule); border-top: 4px solid var(--accent); border-radius: var(--radius); background: var(--surface); }
+.series-head { display: grid; gap: 0.55rem; max-width: 50rem; margin-bottom: 1.5rem; }
+.series-eyebrow { color: var(--accent); }
+.series-head h2 { font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2rem); }
+.series-head p { color: var(--muted); }
+.series-source { font-size: 0.86rem; }
+.series-grid { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(15.5rem, 1fr)); gap: 0.5rem; }
+.series-grid a { display: flex; align-items: baseline; gap: 0.7rem; height: 100%; padding: 0.6rem 0.8rem; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--paper); color: var(--ink); text-decoration: none; font-size: 0.9rem; line-height: 1.35; transition: border-color .2s, background .2s; }
+.series-grid a:hover { border-color: var(--accent); background: var(--accent-soft); }
+.series-no { flex: none; min-width: 3.4rem; color: var(--accent); font-weight: 700; font-size: 0.8rem; font-variant-numeric: tabular-nums; }
+.series-grid.is-collapsed li:nth-child(n+13) { display: none; }
+.art-heading { font-size: clamp(1.4rem, 1.1rem + 1vw, 1.8rem); margin-bottom: 1rem; }
+
 /* Cloud projects */
 .cloud { display: grid; gap: 2.25rem; }
 .cloud-group h3 { font-size: 1.15rem; margin-bottom: 0.9rem; }
