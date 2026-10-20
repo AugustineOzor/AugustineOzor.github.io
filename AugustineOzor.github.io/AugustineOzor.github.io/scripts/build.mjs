@@ -292,26 +292,42 @@ const rowsHTML = projects
 // ---------- Knowledge articles ----------
 const allArticles = await loadArticles(p("articles"));
 const articles = allArticles.filter((a) => !a.series);
-const seriesItems = allArticles.filter((a) => a.series).sort((x, y) => (x.seriesNo || 0) - (y.seriesNo || 0));
+const seriesItems = allArticles.filter((a) => a.series).sort((x, y) => (x.series || "").localeCompare(y.series || "") || (x.seriesNo || 0) - (y.seriesNo || 0));
 const artCfg = await readJSON("data/articles.config.json").catch(() => ({ categories: [], initial: 9, intro: "" }));
 const artCatName = Object.fromEntries(artCfg.categories.map((c) => [c.id, c.name]));
-const seriesCfg = (artCfg.series || {})["eu-ai-act"];
-const seriesHTML = seriesItems.length && seriesCfg
-  ? `
-      <div class="series" id="eu-series">
+const seriesById = artCfg.series || {};
+const seriesOf = (a) => seriesById[a.series] || {};
+function seriesTile(a, cfg) {
+  const no = (cfg.numbered || "{n}").replace("{n}", a.seriesNo);
+  return `<li><a href="#read/${a.slug}"><span class="series-no">${esc(no)}</span><span class="series-title">${esc(a.short || a.title)}</span></a></li>`;
+}
+const seriesHTML = (artCfg.seriesOrder || Object.keys(seriesById))
+  .map((id) => {
+    const cfg = seriesById[id];
+    const items = seriesItems.filter((a) => a.series === id);
+    if (!cfg || !items.length) return "";
+    const gridId = `series-grid-${id}`;
+    const body = cfg.groups
+      ? cfg.groups
+          .map((g) => {
+            const gi = items.filter((a) => a.group === g.id);
+            return gi.length ? `<div class="series-group"><h3>${esc(g.name)}</h3><ol class="series-grid">${gi.map((a) => seriesTile(a, cfg)).join("")}</ol></div>` : "";
+          })
+          .join("")
+      : `<ol class="series-grid${cfg.collapse ? " is-collapsed" : ""}" id="${gridId}">${items.map((a) => seriesTile(a, cfg)).join("")}</ol>
+        ${cfg.collapse && items.length > cfg.collapse ? `<p class="art-more"><button type="button" class="button series-more" aria-controls="${gridId}" aria-expanded="false" data-total="${items.length}">Show all ${items.length} articles in the series</button></p>` : ""}`;
+    return `
+      <div class="series" id="series-${id}">
         <div class="series-head">
-          <p class="xw-eyebrow series-eyebrow">Series · ${seriesItems.length} articles</p>
-          <h2>${esc(seriesCfg.title)}</h2>
-          <p>${esc(seriesCfg.intro)}</p>
-          ${seriesCfg.source ? `<p class="series-source">Source: <a href="${esc(seriesCfg.source)}" rel="noopener">Regulation (EU) 2024/1689 on EUR-Lex</a>. ${esc(seriesCfg.sourceNote || "")}</p>` : ""}
+          <p class="xw-eyebrow series-eyebrow">Series · ${items.length} articles</p>
+          <h2>${esc(cfg.title)}</h2>
+          <p>${esc(cfg.intro)}</p>
+          ${cfg.source ? `<p class="series-source">Source: <a href="${esc(cfg.source)}" rel="noopener">Regulation (EU) 2024/1689 on EUR-Lex</a>. ${esc(cfg.sourceNote || "")}</p>` : ""}
         </div>
-        <ol class="series-grid is-collapsed" id="series-grid">${seriesItems
-          .map((a) => `<li><a href="#read/${a.slug}"><span class="series-no">Art. ${a.seriesNo}</span><span class="series-title">${esc(a.short || a.title)}</span></a></li>`)
-          .join("")}</ol>
-        ${seriesItems.length > 12 ? `<p class="art-more"><button type="button" class="button" id="series-more" aria-controls="series-grid" aria-expanded="false">Show all ${seriesItems.length} articles in the series</button></p>` : ""}
-      </div>
-      <h2 class="art-heading">More articles</h2>`
-  : "";
+        ${body}
+      </div>`;
+  })
+  .join("") + (seriesItems.length ? `<h2 class="art-heading">More articles</h2>` : "");
 const articlesHTML = articles.length
   ? `${seriesHTML}
       <div class="art-filters" role="group" aria-label="Filter articles by topic">
@@ -342,7 +358,9 @@ const articlesHTML = articles.length
 function articleReaderHTML(a) {
   return `<article class="reader-article">
     <header class="reader-head">
-      <p class="reader-area">${a.series ? `EU AI Act series · Article ${a.seriesNo}` : esc(artCatName[a.category] || "Knowledge article")}</p>
+      <p class="reader-area">${a.series
+        ? esc((seriesOf(a).label || "Series").replace("{n}", a.seriesNo).replace("{group}", ((seriesOf(a).groups || []).find((g) => g.id === a.group) || {}).name || ""))
+        : esc(artCatName[a.category] || "Knowledge article")}</p>
       <h1 tabindex="-1">${esc(a.title)}</h1>
       <dl class="reader-meta"><div><dt>Reading time</dt><dd>${a.minutes} min</dd></div><div><dt>Author</dt><dd>${esc(site.name)}</dd></div></dl>
     </header>
@@ -386,7 +404,7 @@ function readerHTML(x) {
 const caseOrder = JSON.stringify([
   ...projects.map((x) => ({ slug: x.slug, title: x.title, group: "project" })),
   ...articles.map((a) => ({ slug: a.slug, title: a.title, group: "article" })),
-  ...seriesItems.map((a) => ({ slug: a.slug, title: a.title, group: "series" })),
+  ...seriesItems.map((a) => ({ slug: a.slug, title: a.title, group: `series:${a.series}` })),
 ]).replace(/</g, "\\u003c");
 const readerTemplates = inline
   ? [

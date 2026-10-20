@@ -28,7 +28,42 @@
       "title": "EU AI Act, article by article",
       "intro": "A plain-language walkthrough of Regulation (EU) 2024/1689, one article at a time: what each article requires, why it matters, and a real-world example.",
       "source": "https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
-      "sourceNote": "The official text on EUR-Lex and applicable guidance take priority over these plain-language summaries."
+      "sourceNote": "The official text on EUR-Lex and applicable guidance take priority over these plain-language summaries.",
+      "label": "EU AI Act series · Article {n}",
+      "numbered": "Art. {n}",
+      "collapse": 12
+    },
+    "grc-ground-up": {
+      "title": "GRC from the ground up",
+      "intro": "A structured path through governance, risk and compliance, from first principles to running the NIST Risk Management Framework on a real system, using a cloud-hosted medical records platform as the running example.",
+      "label": "GRC from the ground up · {group}",
+      "numbered": "{n}",
+      "groups": [
+        {
+          "id": "foundations",
+          "name": "Foundations"
+        },
+        {
+          "id": "risk",
+          "name": "Risk assessment"
+        },
+        {
+          "id": "controls",
+          "name": "Controls and cloud"
+        },
+        {
+          "id": "rmf",
+          "name": "NIST RMF in practice"
+        },
+        {
+          "id": "operations",
+          "name": "Running the programme"
+        }
+      ]
     }
-  }
+  },
+  "seriesOrder": [
+    "eu-ai-act",
+    "grc-ground-up"
+  ]
 }

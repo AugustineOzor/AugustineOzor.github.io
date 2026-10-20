@@ -428,8 +428,12 @@ body.header-compact { --hh: 4rem; }
 .series-grid { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(15.5rem, 1fr)); gap: 0.5rem; }
 .series-grid a { display: flex; align-items: baseline; gap: 0.7rem; height: 100%; padding: 0.6rem 0.8rem; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--paper); color: var(--ink); text-decoration: none; font-size: 0.9rem; line-height: 1.35; transition: border-color .2s, background .2s; }
 .series-grid a:hover { border-color: var(--accent); background: var(--accent-soft); }
-.series-no { flex: none; min-width: 3.4rem; color: var(--accent); font-weight: 700; font-size: 0.8rem; font-variant-numeric: tabular-nums; }
+.series-no { flex: none; min-width: 1.4rem; color: var(--accent); font-weight: 700; font-size: 0.8rem; font-variant-numeric: tabular-nums; }
 .series-grid.is-collapsed li:nth-child(n+13) { display: none; }
+.series + .series { margin-top: -1.5rem; }
+.series-group + .series-group { margin-top: 1.25rem; }
+.series-group h3 { font-family: var(--sans); font-size: 0.95rem; font-weight: 700; color: var(--ink); margin-bottom: 0.6rem; }
+#series-eu-ai-act .series-no { min-width: 3.4rem; }
 .art-heading { font-size: clamp(1.4rem, 1.1rem + 1vw, 1.8rem); margin-bottom: 1rem; }
 
 /* Cloud projects */
