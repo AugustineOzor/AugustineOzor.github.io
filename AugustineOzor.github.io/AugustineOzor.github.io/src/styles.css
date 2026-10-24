@@ -539,6 +539,10 @@ body.is-reading main > :not(#reader) { display: none; }
 .doc-nav { position: sticky; top: calc(env(safe-area-inset-top, 0px) + var(--hh) + 4.5rem); font-size: 0.92rem; }
 .doc-nav h2 { font-family: var(--sans); font-size: 0.9rem; color: var(--muted); margin-bottom: 0.75rem; }
 .doc-nav ol { list-style: none; display: grid; gap: 0.15rem; border-left: 2px solid var(--rule); }
+.doc-nav { max-height: calc(100vh - var(--hh) - 6rem); overflow-y: auto; }
+.doc-nav .doc-count { display: block; font-weight: 400; font-size: 0.8rem; margin-top: 0.2rem; }
+.doc-nav .doc-group > span { display: block; padding: 0.6rem 0.75rem 0.2rem; font-weight: 700; font-size: 0.82rem; color: var(--ink); }
+.doc-nav .doc-group ol { list-style: none; border: 0; padding-left: 0.5rem; }
 .doc-nav a { display: block; padding: 0.35rem 0.75rem; margin-left: -2px; border-left: 2px solid transparent; color: var(--ink); text-decoration: none; }
 .doc-nav a:hover, .doc-nav a[aria-current="true"] { border-left-color: var(--accent); color: var(--accent); }
 .reader-pager { display: flex; justify-content: space-between; gap: 1rem; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--rule); }

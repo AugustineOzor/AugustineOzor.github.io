@@ -126,16 +126,6 @@
       "frameworks": [
         "CIS Controls",
         "NIST CSF"
-      ],
-      "featured": 6,
-      "context": "AWS cloud environment (fictional)",
-      "problem": "An AWS environment needs a clear view of its security posture and a prioritised path to harden it.",
-      "approach": "Inventories assets, records findings, rates the resulting risks and maps remediating controls to CIS and NIST CSF.",
-      "deliverables": [
-        "Asset inventory",
-        "Findings and risk ratings",
-        "Control mapping",
-        "Hardening roadmap"
       ]
     },
     "generative-ai-customer-service-risk-assessment": {
@@ -290,6 +280,27 @@
       "frameworks": [
         "HIPAA"
       ]
+    },
+    "NexusGuard-ISO27001-Implementation": {
+      "title": "NexusGuard: ISO/IEC 27001:2022 ISMS implementation",
+      "theme": "assurance",
+      "frameworks": [
+        "ISO/IEC 27001",
+        "HIPAA",
+        "PCI DSS"
+      ],
+      "featured": 6,
+      "context": "Technology company handling PHI, card data and personal data (fictional)",
+      "problem": "A technology company handling health, payment card and personal data has an outdated 2021 policy and no asset register, committee charters, metrics or documented procedures.",
+      "approach": "Builds the documents an ISMS needs as five linked projects, from governance and policies to access control, assets, operating procedures and people, each mapped to ISO/IEC 27001:2022 clauses and Annex A controls.",
+      "deliverables": [
+        "Information security policy suite",
+        "Access control and exception process",
+        "ISMS committee charters and 26-metric KPI framework",
+        "45-asset register and four SOPs",
+        "Security awareness programme for 450 staff"
+      ],
+      "summary": "End-to-end ISMS build: policy suite with gap analysis, access control and exceptions, governance charters and KPIs, a 45-asset register with SOPs, and a role-based awareness programme."
     }
   }
 }

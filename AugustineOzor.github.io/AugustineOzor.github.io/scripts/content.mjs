@@ -5,8 +5,8 @@
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 
 const SKIP = /(^|\/)(LICENSE|CONTRIBUTING|CODE_OF_CONDUCT|SECURITY|CHANGELOG)(\.md)?$/i;
-const MAX_DOCS = 15;
-const MAX_HTML = 400_000; // per repo, keeps the page fast
+const MAX_DOCS = 60;
+const MAX_HTML = 2_500_000; // per repo; project pages load on demand, so this can be generous
 
 export function slugOf(name) {
   return name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
@@ -36,10 +36,29 @@ function resolvePath(from, rel) {
   }
   return out.join("/");
 }
+// The sub-project a document belongs to: the first folder below the folder all documents share.
+function folderOf(p, all) {
+  const dirs = all.map((x) => x.split("/").slice(0, -1)).filter((d) => d.length > 0);
+  let common = dirs[0] || [];
+  for (const d of dirs) { let i = 0; while (i < common.length && d[i] === common[i]) i++; common = common.slice(0, i); }
+  const rest = p.split("/").slice(common.length, -1);
+  return rest[0] || "";
+}
 const ghSlug = (text) =>
   text.toLowerCase().replace(/<[^>]+>/g, "").replace(/&[a-z#0-9]+;/g, "").replace(/[^\p{L}\p{N}\s-]/gu, "").trim().replace(/\s/g, "-");
 const decode = (s) => s.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, "&");
 const escHTML = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+// Resolve a link target to a known document, tolerating repos whose files sit inside an extra folder.
+function findDoc(resolved, docIndexByPath) {
+  const candidates = [resolved, resolved.replace(/\/$/, "") + "/README.md", resolved.replace(/\/$/, "") + "/readme.md"];
+  for (const c of candidates) if (c in docIndexByPath) return c;
+  for (const c of candidates) {
+    const hit = Object.keys(docIndexByPath).find((k) => k.toLowerCase().endsWith("/" + c.toLowerCase()));
+    if (hit) return hit;
+  }
+  return null;
+}
 
 // ---------- Markdown pre-processing ----------
 function preprocess(md, ctx) {
@@ -61,7 +80,8 @@ function preprocess(md, ctx) {
     if (/^(https?:|mailto:|#)/i.test(u)) return u;
     const [target, anchor] = u.split("#");
     const resolved = resolvePath(path, decodeURIComponent(target));
-    if (resolved in docIndexByPath) return `#read/${slug}/${docIndexByPath[resolved]}${anchor ? `/${anchor}` : ""}`;
+    const docPath = findDoc(resolved, docIndexByPath);
+    if (docPath) return `#read/${slug}/${docIndexByPath[docPath]}${anchor ? `/${anchor}` : ""}`;
     return `https://github.com/${user}/${repo}/${/\.[a-z0-9]+$/i.test(resolved) ? "blob" : "tree"}/${branch}/${resolved}`;
   };
   const placeholder = (u) => {
@@ -126,16 +146,22 @@ export async function loadContent({ user, repos, token, offline, cacheDir }) {
         .map((t) => t.path)
         .filter((p) => /\.md$/i.test(p) && !SKIP.test(p))
         .sort((a, b) => {
-          const rank = (p) => (/^readme\.md$/i.test(p) ? 0 : /sources\.md$/i.test(p) ? 3 : /readme\.md$/i.test(p) ? 1 : 2);
-          return rank(a) - rank(b) || a.split("/").length - b.split("/").length || a.localeCompare(b);
+          const key = (p) => (/sources\.md$/i.test(p) ? "\uffff" : "") + p.toLowerCase().replace(/(^|\/)readme\.md$/, "$1\u0000");
+          return key(a).localeCompare(key(b));
         })
         .slice(0, MAX_DOCS);
       const docIndexByPath = Object.fromEntries(mdPaths.map((p, i) => [p, i]));
       const slug = slugOf(repo.name);
       const docs = [];
+      const seenRaw = new Set();
       let total = 0;
       for (const [i, p] of mdPaths.entries()) {
-        const raw = await (await gh(`/repos/${user}/${repo.name}/contents/${p.split("/").map(encodeURIComponent).join("/")}?ref=${encodeURIComponent(branch)}`, { headers: { Accept: "application/vnd.github.raw" } })).text();
+        const rawUrl = `https://raw.githubusercontent.com/${user}/${repo.name}/${encodeURIComponent(branch)}/${p.split("/").map(encodeURIComponent).join("/")}`;
+        let rawRes = await fetch(rawUrl, { headers: { "User-Agent": "portfolio-build" } });
+        if (!rawRes.ok) rawRes = await gh(`/repos/${user}/${repo.name}/contents/${p.split("/").map(encodeURIComponent).join("/")}?ref=${encodeURIComponent(branch)}`, { headers: { Accept: "application/vnd.github.raw" } });
+        const raw = await rawRes.text();
+        if (seenRaw.has(raw.trim())) continue; // skip duplicate copies (e.g. a README repeated in a wrapper folder)
+        seenRaw.add(raw.trim());
         const pre = preprocess(raw, { user, repo: repo.name, branch, path: p, docIndexByPath, slug });
         const rendered = await (await gh(`/markdown`, { method: "POST", body: JSON.stringify({ text: pre.md, mode: "gfm", context: `${user}/${repo.name}` }) })).text();
         let html = postprocess(rendered, { ...pre, docIndex: i, slug });
@@ -143,7 +169,12 @@ export async function loadContent({ user, repos, token, offline, cacheDir }) {
         html = stripFirstH1(html);
         total += html.length;
         if (total > MAX_HTML) { warnings.push(`"${repo.name}": stopped after ${docs.length} documents to keep the page fast.`); break; }
-        docs.push({ path: p, title, html });
+        docs.push({ path: p, title, html, folder: folderOf(p, mdPaths) });
+      }
+      for (const d of docs) {
+        if (!d.folder) continue;
+        const lead = docs.find((x) => x.folder === d.folder && /readme\.md$/i.test(x.path));
+        d.group = lead ? lead.title : prettyFile(d.folder);
       }
       const files = blobs
         .filter((t) => !/\.md$/i.test(t.path))

@@ -383,8 +383,25 @@ function readerHTML(x) {
         <div><dt>Source</dt><dd><a href="${esc(x.url)}" rel="noopener">GitHub repository</a></dd></div>
       </dl>
     </header>`;
+  const grouped = docs.some((d) => d.group);
+  let tocItems = "";
+  if (grouped) {
+    let current = null;
+    docs.forEach((d, i) => {
+      if (d.group && d.group !== current) {
+        if (current !== null) tocItems += "</ol></li>";
+        current = d.group;
+        tocItems += `<li class="doc-group"><span>${esc(d.group)}</span><ol>`;
+      } else if (!d.group && current !== null) { tocItems += "</ol></li>"; current = null; }
+      const label = d.group && /readme\.md$/i.test(d.path) && d.title === d.group ? "Overview" : d.title;
+      tocItems += `<li><a href="#read/${x.slug}/${i}">${esc(label)}</a></li>`;
+    });
+    if (current !== null) tocItems += "</ol></li>";
+  } else {
+    tocItems = docs.map((d, i) => `<li><a href="#read/${x.slug}/${i}">${esc(d.title)}</a></li>`).join("");
+  }
   const toc = docs.length > 1
-    ? `<nav class="doc-nav" aria-label="Documents in this project"><h2>In this project</h2><ol>${docs.map((d, i) => `<li><a href="#read/${x.slug}/${i}">${esc(d.title)}</a></li>`).join("")}</ol></nav>`
+    ? `<nav class="doc-nav" aria-label="Documents in this project"><h2>In this project <span class="doc-count">${docs.length} documents</span></h2><ol>${tocItems}</ol></nav>`
     : "";
   const body = docs.length
     ? docs.map((d, i) => `<section class="doc" id="doc-${i}">${docs.length > 1 || i > 0 ? `<h2 class="doc-title">${esc(d.title)}</h2>` : ""}${d.html}</section>`).join("")
