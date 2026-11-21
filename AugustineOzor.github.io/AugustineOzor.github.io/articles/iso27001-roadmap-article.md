@@ -2,14 +2,14 @@
 title: "Six Steps to Build an ISO 27001 Roadmap That Survives Reality"
 author: Augustine Ozor
 description: "How to turn the 16 stages of an ISO 27001 implementation into a Gantt-based roadmap with parallel work, leadership gates, named owners and built-in slack."
-tags: [ISO 27001, ISMS, GRC, Programme planning]
+tags: [ISO 27001, ISMS, GRC, Program planning]
 ---
 
 # Six Steps to Build an ISO 27001 Roadmap That Survives Reality
 
 *By Augustine Ozor · 8 min read*
 
-An implementation plan is easy to draw and hard to keep. The 16 stages of an ISO 27001 programme are sequential in places and parallel in others, and the plans that hold up are the ones that expect vendors to fail audits, people to leave and workshops to be cancelled. Here are six steps for building one that survives contact with reality, with a Gantt chart you can adapt.
+An implementation plan is easy to draw and hard to keep. The 16 stages of an ISO 27001 program are sequential in places and parallel in others, and the plans that hold up are the ones that expect vendors to fail audits, people to leave and workshops to be cancelled. Here are six steps for building one that survives contact with reality, with a Gantt chart you can adapt.
 
 ## Step 1 · Lay out the 16 stages as a Gantt chart
 
@@ -71,7 +71,7 @@ Hold a formal review at the end of each major stage. No one proceeds past a gate
 
 ## Step 4 · Allocate ownership per stage
 
-Each stage gets one named owner. In most programmes that is the ISMS owner, with input from function leads. Shared ownership is how stages stall.
+Each stage gets one named owner. In most programs that is the ISMS owner, with input from function leads. Shared ownership is how stages stall.
 
 | Stages | Single owner | Input from |
 |---|---|---|
@@ -79,14 +79,14 @@ Each stage gets one named owner. In most programmes that is the ISMS owner, with
 | 4-6 Leadership, policy, roles | ISMS owner | CEO (sponsor), Head of People |
 | 7-8 Risk methodology and assessment | ISMS owner | Function leads as risk owners |
 | 9-10 Treatment and SoA | ISMS owner | CTO, Legal, control owners |
-| 11 Control implementation | ISMS owner (programme) | Control owners per Annex A theme |
+| 11 Control implementation | ISMS owner (program) | Control owners per Annex A theme |
 | 12 Evidence | ISMS owner | Every control owner |
-| 13-14 Internal audit, management review | ISMS owner (programme); independent auditor | CEO chairs review |
+| 13-14 Internal audit, management review | ISMS owner (program); independent auditor | CEO chairs review |
 | 15-16 CAPA, certification | ISMS owner | Finding owners, audit coordinator |
 
 ## Step 5 · Build in slack
 
-This is the step that saves the programme. Reality intervenes: vendors fail audits, key people leave, workshops get cancelled. Reserve two to three weeks of unallocated time as a buffer.
+This is the step that saves the program. Reality intervenes: vendors fail audits, key people leave, workshops get cancelled. Reserve two to three weeks of unallocated time as a buffer.
 
 In the chart the buffer sits just before the readiness verdict, so any slippage upstream is absorbed before the certification audits are locked in. A few rules keep it honest:
 
@@ -94,14 +94,18 @@ In the chart the buffer sits just before the readiness verdict, so any slippage 
 - Do not pre-allocate it to "nice to have" tasks.
 - If more than half is gone before the internal audit, treat that as a signal to re-plan, not to hope.
 
-## Step 6 · Track weekly and re-baseline at each gate
+### The buffer rule
 
-> **Editor's note (delete before publishing):** the source outline listed six steps but only five were provided; this sixth is a suggested closing step. Replace it with your own if you had a different one in mind.
+Programs without buffer always slip past the audit date. Programs with 2 to 3 weeks of buffer hit the date in 80% of cases. This single discipline is worth more than any tool.
 
-A roadmap is a living document. Review progress weekly against the chart, report variance and buffer used to the steering committee, and re-baseline the remaining plan at each gate. Update dates when facts change, rather than defending a plan that no longer reflects reality.
+## Step 6 · Communicate the sequence publicly
+
+Share the roadmap with leadership and the project team in week 1. Put the Gantt chart and the dependency map in the kickoff pack, and make both easy to find afterwards.
+
+Then defend it. When someone wants to skip ahead, point at the dependencies: "we can't approve controls before the risk assessment is done" is a much stronger answer than "that's not the plan". The roadmap becomes your shield.
 
 ## The takeaway
 
-A good ISO 27001 roadmap is not the most optimistic one. It names the dependencies, puts gates where leadership must decide, gives every stage one owner and holds time in reserve. Build those four things in and the plan bends instead of breaking.
+A good ISO 27001 roadmap is not the most optimistic one. It names the dependencies, puts gates where leadership must decide, gives every stage one owner, holds time in reserve and is shared openly from week 1. Build those five things in and the plan bends instead of breaking.
 
 The full 16-stage method, with a worked example, a 93-control Statement of Applicability and audit-readiness checklists, is in my [ISO 27001 Implementation Roadmap repository](https://github.com/AugustineOzor/iso27001-isms-implementation-roadmap).
