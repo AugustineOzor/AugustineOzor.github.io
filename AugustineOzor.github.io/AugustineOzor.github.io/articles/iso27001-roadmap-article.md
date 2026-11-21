@@ -1,21 +1,4 @@
----
-{
-  "title": "Six Steps to Build an ISO 27001 Roadmap That Survives Reality",
-  "author": "Augustine Ozor",
-  "description": "How to turn the 16 stages of an ISO 27001 implementation into a Gantt-based roadmap with parallel work, leadership gates, named owners and built-in slack.",
-  "tags": [
-    "ISO 27001",
-    "ISMS",
-    "GRC",
-    "Program planning"
-  ]
-}
----
-
 # Six Steps to Build an ISO 27001 Roadmap That Survives Reality
-
-*By Augustine Ozor · 8 min read*
-
 An implementation plan is easy to draw and hard to keep. The 16 stages of an ISO 27001 program are sequential in places and parallel in others, and the plans that hold up are the ones that expect vendors to fail audits, people to leave and workshops to be cancelled. Here are six steps for building one that survives contact with reality, with a Gantt chart you can adapt.
 
 ## Step 1 · Lay out the 16 stages as a Gantt chart
@@ -39,7 +22,8 @@ Give each stage one row. These are typical allocations for a company of 100 to 2
 
 Laid out with the overlaps below, this comes to roughly 45 weeks (about ten months), including a three-week buffer and the certification audits.
 
-![Indicative 45-week ISO 27001 implementation Gantt chart: 16 stages, four leadership gates (G1 to G4) and a 3-week buffer before the certification audits](gantt-chart.jpg)
+<img width="2080" height="1192" alt="gantt-chart" src="https://github.com/user-attachments/assets/61f7693f-fdaf-4bae-a016-4373ec7bbbf3" />
+
 
 *Indicative 45-week plan. Red diamonds are leadership gates; the dashed box is the unallocated buffer.*
 
