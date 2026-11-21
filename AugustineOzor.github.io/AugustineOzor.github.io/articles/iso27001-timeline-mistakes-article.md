@@ -1,21 +1,7 @@
----
-{
-  "title": "Six Timeline Mistakes That Kill ISO 27001 Programs",
-  "author": "Augustine Ozor",
-  "description": "Six sequencing and timing mistakes that turn ISO 27001 programs into audit findings, and the fix for each.",
-  "tags": [
-    "ISO 27001",
-    "ISMS",
-    "GRC",
-    "Internal audit",
-    "Program planning"
-  ]
-}
----
+
+<img width="1600" height="400" alt="banner" src="https://github.com/user-attachments/assets/be92d5bb-d6d2-4434-b4d0-25c0c171fee5" />
 
 # Six Timeline Mistakes That Kill ISO 27001 Programs
-
-*By Augustine Ozor · 6 min read*
 
 Most ISO 27001 programs don't fail because the team lacks skill. They fail on timing: work done in the wrong order, or all at once, or not at all. Auditors read a timeline the way an accountant reads a ledger. Here are six timeline mistakes that turn a good program into a list of findings, and what to do instead.
 
