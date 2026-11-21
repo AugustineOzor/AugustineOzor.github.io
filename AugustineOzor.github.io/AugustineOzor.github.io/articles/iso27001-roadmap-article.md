@@ -31,8 +31,8 @@ Give each stage one row. These are typical allocations for a company of 100 to 2
 | Certification stage 1 + stage 2 audits | 6 wk |
 
 Laid out with the overlaps below, this comes to roughly 45 weeks (about ten months), including a three-week buffer and the certification audits.
+<img width="2080" height="1192" alt="gantt-chart" src="https://github.com/user-attachments/assets/dabe4f95-e10f-4081-adda-595ff3562336" />
 
-![Indicative 45-week ISO 27001 implementation Gantt chart: 16 stages, four leadership gates (G1 to G4) and a 3-week buffer before the certification audits](gantt-chart.jpg)
 
 *Indicative 45-week plan. Red diamonds are leadership gates; the dashed box is the unallocated buffer.*
 
