@@ -1,21 +1,7 @@
----
-{
-  "title": "ISO 27001 Gap Assessment: Measure the Management System Before You Touch a Control",
-  "author": "Augustine Ozor",
-  "description": "How to run an ISO 27001 gap assessment against Clauses 4 to 10, rate each clause with a 3-tier scale, demand evidence, and produce a report that earns funding.",
-  "tags": [
-    "ISO 27001",
-    "ISMS",
-    "GRC",
-    "Gap assessment",
-    "Program planning"
-  ]
-}
----
+
 
 # ISO 27001 Gap Assessment: Measure the Management System Before You Touch a Control
-
-*By Augustine Ozor · 6 min read*
+<img width="1600" height="400" alt="banner (1)" src="https://github.com/user-attachments/assets/a31c172d-27a8-4229-bf34-e12122c3a67b" />
 
 You can't plan a journey without knowing the starting point. A gap assessment is the structured measurement of how far an organization currently is from the requirements of ISO 27001. It is the first thing a competent Lead Implementer does after leadership buy-in, before writing a single policy and before touching a control.
 
