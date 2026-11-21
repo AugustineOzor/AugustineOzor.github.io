@@ -1,21 +1,6 @@
----
-{
-  "title": "Six Steps to a Gap Assessment That Survives Stage 1",
-  "author": "Augustine Ozor",
-  "description": "A six-step, evidence-first method for running an ISO 27001 gap assessment of Clauses 4 to 10, with time estimates, a conservative rating rule and a report leadership can fund.",
-  "tags": [
-    "ISO 27001",
-    "ISMS",
-    "GRC",
-    "Gap assessment",
-    "Stage 1 audit"
-  ]
-}
----
-
 # Six Steps to a Gap Assessment That Survives Stage 1
+<img width="1600" height="400" alt="banner" src="https://github.com/user-attachments/assets/400a2b82-15fa-4507-affa-322d8e199d28" />
 
-*By Augustine Ozor · 6 min read*
 
 A gap assessment is only useful if you can defend it. The version that survives a certification body's Stage 1 is evidence-first, rated conservatively and written so that a re-read months later still rings true. Here are six steps, with realistic time estimates for a small company, that get you there.
 
