@@ -1,11 +1,26 @@
+# Build and deploy · augustineozor.github.io
+#
+# Rebuilds and publishes the website automatically whenever you upload or
+# change ANY file in this repository (articles, images, scripts, data).
+# Also rebuilds every 6 hours so new GitHub repos and Medium posts appear,
+# and can be run by hand from the Actions tab ("Run workflow").
+#
+# Extra: an article .md file uploaded to the wrong folder (for example the
+# top of the repo) is found and added to the articles section anyway, as long
+# as it starts with the site's front matter ( ---  then  { "title": ... } ).
+#
+# Where this file lives: .github/workflows/deploy.yml at the TOP of the repo.
+
 name: Build and deploy
 
 on:
   push:
-    branches: [main]
+    branches: [main, master]
   schedule:
-    - cron: "0 3 * * *"   # daily rebuild so new repos appear automatically
+    - cron: "0 */6 * * *"
   workflow_dispatch:
+  repository_dispatch:
+    types: [rebuild-site]
 
 permissions:
   contents: read
@@ -20,25 +35,63 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Get the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Locate site folder
+
+      - name: Find the website folder
         id: site
         run: |
-          f=$(find . -path ./node_modules -prune -o -path '*/scripts/build.mjs' -print | head -n 1)
-          if [ -z "$f" ]; then echo "scripts/build.mjs not found in repo"; exit 1; fi
+          f=$(find . -path ./.git -prune -o -path '*/node_modules' -prune -o -path '*/scripts/build.mjs' -print | head -n 1)
+          if [ -z "$f" ]; then
+            echo "::error::Could not find scripts/build.mjs anywhere in the repository."
+            exit 1
+          fi
           dir=$(dirname "$(dirname "$f")")
-
-          echo "Site folder: $dir"
+          echo "Website folder: $dir"
           echo "dir=$dir" >> "$GITHUB_OUTPUT"
-      - name: Build site from GitHub repos
-        run: node scripts/build.mjs
+
+      - name: Pick up articles uploaded to the wrong folder
+        env:
+          SITE: ${{ steps.site.outputs.dir }}
+        run: |
+          mkdir -p "$SITE/articles"
+          site_abs=$(cd "$SITE" && pwd)
+          found=0
+          while IFS= read -r -d '' f; do
+            f_abs=$(cd "$(dirname "$f")" && pwd)/$(basename "$f")
+            case "$f_abs" in "$site_abs"/articles/*) continue ;; esac
+            # Only files that start with the article front matter:  ---  then  {
+            if [ "$(head -n 1 "$f" | tr -d '\r')" = "---" ] && head -n 3 "$f" | sed -n '2,3p' | grep -q '^[[:space:]]*{'; then
+              name=$(basename "$f")
+              if [ -f "$SITE/articles/$name" ]; then
+                echo "Updating article from $f (replaces articles/$name)"
+              else
+                echo "Adding article from $f"
+              fi
+              cp "$f" "$SITE/articles/$name"
+              found=$((found+1))
+            fi
+          done < <(find . -path ./.git -prune -o -path '*/node_modules' -prune -o -path '*/dist' -prune -o -type f -name '*.md' -print0)
+          echo "Articles picked up from other folders: $found"
+          echo "Articles in the site: $(ls "$SITE/articles"/*.md 2>/dev/null | wc -l)"
+
+      - name: Build the website
         working-directory: ${{ steps.site.outputs.dir }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - uses: actions/upload-pages-artifact@v3
+        run: |
+          if [ -f package-lock.json ]; then npm ci --no-audit --no-fund; elif [ -f package.json ] && grep -q '"dependencies"' package.json; then npm install --no-audit --no-fund; fi
+          node scripts/build.mjs
+          test -f dist/index.html || { echo "::error::Build finished but dist/index.html is missing."; exit 1; }
+          echo "Built $(find dist -name '*.html' | wc -l) pages."
+
+      - name: Package the website
+        uses: actions/upload-pages-artifact@v3
         with:
           path: ${{ steps.site.outputs.dir }}/dist
 
@@ -49,5 +102,6 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - id: deployment
+      - name: Publish to GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v4

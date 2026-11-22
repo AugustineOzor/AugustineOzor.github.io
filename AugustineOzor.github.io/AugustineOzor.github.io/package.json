@@ -7,5 +7,10 @@
     "build:offline": "node scripts/build.mjs --offline",
     "preview": "python3 -m http.server 8080 --directory dist"
   },
-  "engines": { "node": ">=18" }
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "marked": "18.0.10"
+  }
 }

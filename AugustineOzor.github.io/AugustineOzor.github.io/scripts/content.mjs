@@ -1,5 +1,7 @@
-// Fetches every Markdown document in a repo and renders it with GitHub's own
-// Markdown API, so tables, task lists and diagrams look the way they do on GitHub.
+// Fetches every Markdown document in a repo and renders it to HTML.
+// Rendering is done locally with "marked" (GitHub Flavored Markdown: tables, task
+// lists, strikethrough). GitHub's own /markdown API is only a fallback, because it
+// rate-limits after a few dozen documents and left most project pages empty.
 // Results are cached in content/<repo>.json and reused while the repo is unchanged.
 
 import { readFile, writeFile, mkdir } from "node:fs/promises";
@@ -7,6 +9,15 @@ import { readFile, writeFile, mkdir } from "node:fs/promises";
 const SKIP = /(^|\/)(LICENSE|CONTRIBUTING|CODE_OF_CONDUCT|SECURITY|CHANGELOG)(\.md)?$/i;
 const MAX_DOCS = 60;
 const MAX_HTML = 2_500_000; // per repo; project pages load on demand, so this can be generous
+
+let renderLocal = null;
+try {
+  const { marked } = await import("marked");
+  marked.setOptions({ gfm: true, breaks: false });
+  renderLocal = (md) => marked.parse(md);
+} catch {
+  console.warn("! \"marked\" is not installed; falling back to GitHub's Markdown API (may be rate-limited).");
+}
 
 export function slugOf(name) {
   return name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
@@ -163,7 +174,9 @@ export async function loadContent({ user, repos, token, offline, cacheDir }) {
         if (seenRaw.has(raw.trim())) continue; // skip duplicate copies (e.g. a README repeated in a wrapper folder)
         seenRaw.add(raw.trim());
         const pre = preprocess(raw, { user, repo: repo.name, branch, path: p, docIndexByPath, slug });
-        const rendered = await (await gh(`/markdown`, { method: "POST", body: JSON.stringify({ text: pre.md, mode: "gfm", context: `${user}/${repo.name}` }) })).text();
+        const rendered = renderLocal
+          ? renderLocal(pre.md)
+          : await (await gh(`/markdown`, { method: "POST", body: JSON.stringify({ text: pre.md, mode: "gfm", context: `${user}/${repo.name}` }) })).text();
         let html = postprocess(rendered, { ...pre, docIndex: i, slug });
         const title = (i === 0 ? "Overview" : firstH1(raw)) || prettyFile(p);
         html = stripFirstH1(html);

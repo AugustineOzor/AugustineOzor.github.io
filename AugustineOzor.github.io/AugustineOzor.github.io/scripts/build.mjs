@@ -58,20 +58,58 @@ const warnings = [];
 const exclude = new Set(config.exclude.map((s) => s.toLowerCase()));
 const themeIds = new Set(config.themes.map((t) => t.id));
 
+// New repos that are not in data/projects.config.json are filed automatically
+// from their name, description and topics, so a new upload never lands in "Other work".
+function autoTag(r) {
+  const clean = (t) => t.toLowerCase().replace(/[-_]+/g, " ");
+  const text = clean(`${r.name} ${r.description || ""} ${(r.topics || []).join(" ")}`);
+  const has = (re) => re.test(text);
+  // The repo name decides first; the description only breaks a tie, because a
+  // description often lists several frameworks a project merely maps to.
+  const pick = (t) => {
+    const ai = /\bai\b|artificial intelligence|llm|genai|generative|machine learning|\bml\b|copilot|agent|model/.test(t);
+    if (/eu ai act|\bai act\b|article ?\d|annex iii|high risk ai|prohibited ai/.test(t)) return "eu-ai-act";
+    if (/gdpr|privacy|ccpa|dpia|dsar|data protection|pdppl|ropa/.test(t)) return "privacy";
+    if (ai && /risk|security|threat|red team|vendor|third party|impact assessment|testing/.test(t)) return "ai-risk";
+    if (ai || /42001|ai rmf|responsible ai|ai governance/.test(t)) return "ai-governance";
+    if (/27001|soc ?2|cmmc|zero trust|incident|audit|security|third party|continuity|disaster|cloud|compliance|grc|risk/.test(t)) return "assurance";
+    return null;
+  };
+  const theme = pick(clean(`${r.name} ${(r.topics || []).join(" ")}`)) || pick(text) || "other";
+  const fw = [
+    [/eu ai act|\bai act\b|article \d|annex iii/, "EU AI Act"],
+    [/42001/, "ISO/IEC 42001"],
+    [/27001|isms/, "ISO/IEC 27001"],
+    [/nist ai rmf|ai rmf/, "NIST AI RMF"],
+    [/nist csf|csf 2/, "NIST CSF 2.0"],
+    [/800 53/, "NIST SP 800-53"],
+    [/soc 2|soc2/, "SOC 2"],
+    [/cmmc/, "CMMC"],
+    [/gdpr/, "GDPR"],
+    [/ccpa/, "CCPA"],
+    [/dora\b/, "DORA"],
+    [/hipaa/, "HIPAA"],
+    [/pci/, "PCI DSS"],
+    [/zero trust/, "Zero Trust"],
+  ].filter(([re]) => has(re)).map(([, n]) => n);
+  return { theme, frameworks: fw };
+}
+
 const projects = repos
   .filter((r) => !exclude.has(r.name.toLowerCase()))
   .map((r) => {
     const c = config.repos[r.name] || {};
-    if (!config.repos[r.name]) warnings.push(`Untagged repo "${r.name}": shown under "Other work". Add it to data/projects.config.json.`);
+    const guessed = config.repos[r.name] ? null : autoTag(r);
+    if (guessed) warnings.push(`New repo "${r.name}" auto-filed under "${guessed.theme}"${guessed.frameworks.length ? ` with ${guessed.frameworks.join(", ")}` : ""}. Add it to data/projects.config.json to change this.`);
     if (!r.description && !c.summary) warnings.push(`"${r.name}" has no GitHub description. Add one on GitHub or a "summary" in the config.`);
-    const theme = themeIds.has(c.theme) ? c.theme : "other";
+    const theme = themeIds.has(c.theme) ? c.theme : guessed && themeIds.has(guessed.theme) ? guessed.theme : "other";
     return {
       name: r.name,
       slug: slugOf(r.name),
       title: c.title || prettify(r.name),
       summary: c.summary || r.description || "",
       theme,
-      frameworks: c.frameworks || [],
+      frameworks: c.frameworks || (guessed ? guessed.frameworks : []),
       url: `https://github.com/${site.githubUser}/${r.name}`,
       demo: r.homepage || "",
       updated: r.pushed_at || null,
