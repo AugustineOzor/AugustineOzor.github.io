@@ -75,7 +75,7 @@ function autoTag(r) {
     if (/27001|soc ?2|cmmc|zero trust|incident|audit|security|third party|continuity|disaster|cloud|compliance|grc|risk/.test(t)) return "assurance";
     return null;
   };
-  const theme = pick(clean(`${r.name} ${(r.topics || []).join(" ")}`)) || pick(text) || "other";
+  const theme = pick(clean(r.name)) || pick(text) || "other";
   const fw = [
     [/eu ai act|\bai act\b|article \d|annex iii/, "EU AI Act"],
     [/42001/, "ISO/IEC 42001"],
